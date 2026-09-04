@@ -392,7 +392,6 @@
         <p style="font-size: 10px; color: var(--text-muted); font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">KLIK DI MANA SAJA UNTUK MEMULAI</p>
     </div>
 
-    <!-- AUDIO SINKRON -->
     <audio id="bg-music" preload="auto">
         <source src="music.mp3" type="audio/mp3">
     </audio>
@@ -404,7 +403,6 @@
     </div>
 
     <div class="app-container">
-        <!-- VIDEO SINKRON -->
         <video id="bg-video" class="video-bg" muted playsinline preload="auto">
             <source src="background.mp4" type="video/mp4">
         </video>
@@ -416,8 +414,14 @@
             </header>
 
             <div id="home-view">
-                <!-- GAMBAR SEKARANG HANYA MUNCUL DI MENU AWAL -->
-                <div style="text-align: center; margin-bottom: 20px; margin-top: 10px;">
+                <!-- TEKS & JAM DI ATAS GAMBAR MENU AWAL -->
+                <div style="text-align: center; margin-top: 5px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 4px;">
+                    <div style="font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent-glow); letter-spacing: 1px;">XAERISOFT VOID</div>
+                    <div id="home-clock" style="font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; color: var(--primary-blue); letter-spacing: 2px;">00:00:00</div>
+                </div>
+
+                <!-- GAMBAR -->
+                <div style="text-align: center; margin-bottom: 25px;">
                     <img src="xaeri.jpg" alt="Banner" style="width: 150px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);">
                 </div>
 
@@ -433,7 +437,6 @@
                     </a>
                 </div>
 
-                <!-- SOSMED -->
                 <div class="social-row">
                     <a href="https://tiktok.com/xaerisoft" target="_blank" class="social-item">
                         <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.29 0 .56.05.82.13V9.4a6.34 6.34 0 00-.82-.05A6.33 6.33 0 003.15 15.7a6.33 6.33 0 0010.82 4.47v-7.14a8.27 8.27 0 005.62 2.13v-3.47a4.86 4.86 0 01-2-.69z"/></svg>
@@ -458,7 +461,6 @@
             </div>
 
             <div id="dashboard-view">
-                <!-- VIDEO MP4 DI PALING ATAS -->
                 <div class="void-card" style="padding: 12px;">
                     <a href="vidio.mp4" style="text-decoration: none; display: block;">
                         <div style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border);">
@@ -471,7 +473,6 @@
                     </a>
                 </div>
 
-                <!-- INFO PROFIL -->
                 <div class="void-card" style="padding: 12px;">
                     <div class="profile-row">
                         <div class="profile-left">
@@ -484,8 +485,8 @@
                         </div>
                     </div>
                 </div>
-   <!-- WIDGET KALENDER + JAM AUTOMATIS (MENGGANTIKAN CUACA) -->
-                <div class="void-card" id="calendar-widget" style="padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+
+                   <div class="void-card" id="calendar-widget" style="padding: 12px; display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div style="font-size: 26px; text-shadow: 0 0 10px var(--accent-glow);">📅</div>
                         <div style="display: flex; flex-direction: column; gap: 2px;">
@@ -569,7 +570,7 @@
             }, 500);
         }
 
-        // FUNGSI UPDATE KALENDER & JAM AUTOMATIS
+        // FUNGSI UPDATE JAM BERSAMAAN (HOME & DASHBOARD)
         function updateCalendar() {
             const now = new Date();
             const days = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
@@ -583,14 +584,17 @@
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
 
             const dateEl = document.getElementById('calendar-date');
             const dayEl = document.getElementById('calendar-day');
             const clockEl = document.getElementById('calendar-clock');
+            const homeClockEl = document.getElementById('home-clock');
 
             if (dateEl) dateEl.textContent = `${dateNum} ${monthName} ${year}`;
             if (dayEl) dayEl.textContent = dayName;
-            if (clockEl) clockEl.textContent = `${hours}:${minutes}:${seconds}`;
+            if (clockEl) clockEl.textContent = timeString;
+            if (homeClockEl) homeClockEl.textContent = timeString;
         }
         setInterval(updateCalendar, 1000);
         updateCalendar();
@@ -610,7 +614,6 @@
                 document.getElementById('display-username').textContent = foundUser.username;
                 document.getElementById('display-avatar').textContent = foundUser.username.charAt(0).toUpperCase();
                 document.getElementById('display-role').textContent = foundUser.role;
-                updateCalendar();
             } else {
                 alert("Username atau Password salah!");
             }
