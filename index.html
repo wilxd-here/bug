@@ -376,158 +376,100 @@
             margin-top: 5px;
             text-transform: uppercase;
         }
-      /* RESET DASHBOARD JESTER STYLE */
-#dashboard-view {
-    display: none;
-    flex-direction: column;
-    gap: 12px;
-    padding-bottom: 20px;
-    font-family: 'Inter', sans-serif;
-}
+              /* DASHBOARD XAERISOFT VOID THEME */
+        #dashboard-view {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 20px;
+            margin-top: 10px;
+            z-index: 5;
+        }
 
-.jester-card {
-    background: #15151c;
-    border-radius: 16px;
-    padding: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
+        .void-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
 
-/* BANNER */
-.jester-banner {
-    position: relative;
-    width: 100%;
-    height: 120px;
-    border-radius: 20px;
-    overflow: hidden;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: url('https://i.pinimg.com/736x/ab/f6/8b/abf68b3558f3f8d2275727eb1882d46e.jpg') center/cover no-repeat;
-}
-.jester-banner::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
-}
-.jester-banner > div {
-    position: relative;
-    z-index: 2;
-}
-.banner-title { font-size: 14px; font-weight: 800; color: #fff; }
-.banner-subtitle { font-size: 10px; color: #aaa; }
+        /* PROFILE SECTION */
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .profile-left { display: flex; align-items: center; gap: 14px; }
+        .profile-avatar {
+            width: 55px; height: 55px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid var(--primary-blue);
+            border-radius: 14px;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            color: var(--primary-blue);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        .profile-info { display: flex; flex-direction: column; gap: 3px; }
+        .profile-name { font-size: 18px; font-weight: 800; color: #fff; font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
+        .profile-role { font-size: 11px; color: var(--primary-blue); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+        .profile-expired { 
+            font-size: 9px; 
+            color: #ef4444; 
+            font-weight: 700; 
+            background: rgba(239, 68, 68, 0.1); 
+            padding: 3px 6px; 
+            border-radius: 6px; 
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            width: fit-content;
+            letter-spacing: 0.5px;
+        }
 
-/* PROFILE ROW */
-.profile-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.profile-left { display: flex; align-items: center; gap: 12px; }
-.profile-avatar {
-    width: 45px; height: 45px;
-    background: #2a2a35;
-    border-radius: 50%;
-    border: 2px solid #8b5cf6;
-}
-.profile-name { font-size: 16px; font-weight: 700; color: #fff; }
-.profile-salam { font-size: 9px; color: #8b5cf6; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;}
-.badge-free {
-    border: 1px solid #555;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 700;
-    color: #bbb;
-}
+        .wallet-badge {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--primary-blue);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-/* STATS PILLS */
-.stats-pills {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    margin-top: 12px;
-}
-.pill {
-    background: #1e1e28;
-    padding: 6px 10px;
-    border-radius: 12px;
-    font-size: 10px;
-    color: #ccc;
-    flex: 1;
-    text-align: center;
-    border: 1px solid rgba(255,255,255,0.05);
-}
-.text-green { color: #10b981 !important; }
+        /* MENUS & STATS */
+        .section-title { font-size: 11px; color: var(--primary-blue); margin: 5px 0 0 0; font-weight: 700; letter-spacing: 1.5px; font-family: 'Orbitron', sans-serif;}
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .action-card {
+            background: rgba(10, 15, 30, 0.6);
+            border: 1px solid var(--glass-border);
+            padding: 12px; border-radius: 12px;
+            display: flex; flex-direction: column; gap: 4px;
+            transition: 0.2s;
+        }
+        .action-card:active { transform: scale(0.95); border-color: var(--primary-blue); }
+        .ac-title { font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px;}
+        .ac-sub { font-size: 9px; color: var(--text-muted); }
 
-/* NOW PLAYING */
-.now-playing-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.music-icon-box {
-    width: 40px; height: 40px;
-    background: rgba(16, 185, 129, 0.2);
-    border-radius: 10px;
-    display: flex; justify-content: center; align-items: center;
-    color: #10b981;
-}
+        .list-menu {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px; background: rgba(10, 15, 30, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; font-size: 12px; font-weight: 600;
+        }
 
-/* GLOBAL CHAT */
-.chat-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 12px;
-}
-.chat-title-box { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; }
-.chat-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; }
-.chat-msg {
-    background: #1e1e28; padding: 12px; border-radius: 10px; font-size: 11px; color: #ddd; margin-bottom: 10px;
-}
-.btn-buka {
-    width: 100%; background: transparent; border: 1px solid #8b5cf6; color: #fff;
-    padding: 10px; border-radius: 10px; font-weight: 600; cursor: pointer;
-}
-
-/* QUICK ACTION */
-.section-title { font-size: 11px; color: #aaa; margin: 10px 0 5px 0; font-weight: 600; letter-spacing: 1px;}
-.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.q-card {
-    padding: 12px; border-radius: 12px;
-    display: flex; flex-direction: column; gap: 4px;
-}
-.q-blue { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); }
-.q-pink { background: rgba(236, 72, 153, 0.15); border: 1px solid rgba(236, 72, 153, 0.3); }
-.q-title { font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px;}
-.q-sub { font-size: 9px; color: #aaa; }
-
-.list-menu {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 14px; background: #1e1e28; border-radius: 12px; margin-top: 8px; font-size: 12px; font-weight: 600;
-}
-
-/* REDEEM */
-.input-redeem {
-    width: 100%; background: #1e1e28; border: 1px solid #333; padding: 14px; border-radius: 12px;
-    color: #fff; margin-bottom: 10px; outline: none;
-}
-.btn-redeem {
-    width: 100%; background: linear-gradient(90deg, #a855f7 0%, #8b5cf6 100%); border: none;
-    padding: 12px; border-radius: 12px; color: #fff; font-weight: 700; cursor: pointer;
-}
-
-/* STATS BOTTOM */
-.stats-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.stat-box { background: #1e1e28; padding: 12px; border-radius: 12px; }
-.stat-box .title { font-size: 10px; color: #aaa; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;}
-.stat-box .value { font-size: 18px; font-weight: 800; color: #fff; }
-
-.premium-card {
-    display: flex; justify-content: space-between; align-items: center;
-    background: #1e1e28; padding: 14px; border-radius: 12px; margin-top: 10px;
-}
-.premium-card .title { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .input-redeem {
+            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); padding: 14px; border-radius: 12px;
+            color: #fff; margin-bottom: 10px; outline: none; transition: 0.3s;
+        }
+        .input-redeem:focus { border-color: var(--primary-blue); }
+        .btn-redeem {
+            width: 100%; background: var(--primary-grad); border: none;
+            padding: 12px; border-radius: 12px; color: #fff; font-weight: 700; cursor: pointer;
+        }
 
     </style>
 
@@ -596,112 +538,69 @@
                     💬 BUY AKUN HUBUNGI ADMIN (WA)
                 </a>
             </div>
-<div id="dashboard-view">
-    <!-- Banner -->
-    <div class="jester-banner">
-        <div>
-            <div class="banner-title">Jester Project</div>
-            <div class="banner-subtitle" id="banner-date">Jum, 4 Sep 2026</div>
-        </div>
-        <div>
-            <div class="banner-title" style="text-align: right;" id="banner-time">18:31 WIB</div>
-        </div>
-    </div>
 
-    <!-- Profile Box -->
-    <div class="jester-card">
-        <div class="profile-row">
-            <div class="profile-left">
-                <div class="profile-avatar"></div>
-                <div>
-                    <div class="profile-salam">SALAM,</div>
-                    <div class="profile-name" id="display-username">Wilzie</div>
+                <!-- DASHBOARD VIEW -->
+        <div id="dashboard-view">
+            
+            <!-- Profile Box -->
+            <div class="void-card">
+                <div class="profile-row">
+                    <div class="profile-left">
+                        <div class="profile-avatar" id="display-avatar">W</div>
+                        <div class="profile-info">
+                            <div class="profile-name" id="display-username">Wilzie</div>
+                            <div class="profile-role" id="display-role">OWNER</div>
+                            <div class="profile-expired">EXPIRED: PERMANEN</div>
+                        </div>
+                    </div>
+                    <div class="wallet-badge">
+                        💳 Rp 0
+                    </div>
                 </div>
             </div>
-            <div class="badge-free">FREE ></div>
-        </div>
-        
-        <div class="stats-pills">
-            <div class="pill">● GS - Tidak aktif</div>
-            <div class="pill">📅 04/09/2026</div>
-            <div class="pill text-green">💳 Wallet - Rp 0</div>
-        </div>
-    </div>
 
-    <!-- Now Playing -->
-    <div class="section-title">NOW PLAYING</div>
-    <div class="jester-card now-playing-card">
-        <div class="music-icon-box">♪</div>
-        <div style="flex: 1;">
-            <div style="font-size: 13px; font-weight: 700;">Belum ada lagu</div>
-            <div style="font-size: 10px; color: #aaa;">Buka Music library</div>
-        </div>
-        <div style="color: #aaa;">></div>
-    </div>
-
-    <!-- Global Chat -->
-    <div class="jester-card">
-        <div class="chat-header">
-            <div class="chat-title-box">
-                <span style="color: #8b5cf6;">🌍</span> Global Chat
+            <!-- Quick Action -->
+            <div class="section-title">QUICK ACTION</div>
+            <div class="grid-2">
+                <div class="action-card">
+                    <div class="ac-title">📅 Daily Login</div>
+                    <div class="ac-sub">Hari 1/7 · +Rp500</div>
+                </div>
+                <div class="action-card">
+                    <div class="ac-title">⚡ Upgrade</div>
+                    <div class="ac-sub">Beli Premium</div>
+                </div>
             </div>
-            <div class="chat-dot"></div>
-        </div>
-        <div class="chat-msg">
-            <strong>HARITHBUG:</strong> Dahlah gs gua kenapa ilang
-        </div>
-        <button class="btn-buka">💬 Buka</button>
-    </div>
+            
+            <div class="list-menu">
+                <div style="display: flex; align-items: center; gap: 8px;"><span style="color: var(--primary-blue);">🏪</span> Xaerisoft Shop</div>
+                <div style="color: var(--text-muted);">></div>
+            </div>
+            <div class="list-menu">
+                <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #ef4444;">🪲</span> Report Bug</div>
+                <div style="color: var(--text-muted);">></div>
+            </div>
 
-    <!-- Quick Action -->
-    <div class="section-title">QUICK ACTION</div>
-    <div class="quick-grid">
-        <div class="q-card q-blue">
-            <div class="q-title">📅 Daily Login</div>
-            <div class="q-sub">Hari 1/7 · +Rp500 wallet</div>
-        </div>
-        <div class="q-card q-pink">
-            <div class="q-title">🩷 Donasi</div>
-            <div class="q-sub">Dukung Jester</div>
-        </div>
-    </div>
-    
-    <div class="list-menu">
-        <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #10b981;">🏪</span> Jester Shop</div>
-        <div style="color: #555;">></div>
-    </div>
-    <div class="list-menu">
-        <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #ef4444;">🪲</span> Bug</div>
-        <div style="color: #555;">></div>
-    </div>
+            <!-- Redeem -->
+            <div class="section-title">REDEEM CODE</div>
+            <div class="void-card" style="padding: 12px;">
+                <input type="text" class="input-redeem" placeholder="🔑 Masukkan kode void...">
+                <button class="btn-redeem">✓ Redeem Sekarang</button>
+            </div>
 
-    <!-- Redeem -->
-    <div class="section-title">REDEEM</div>
-    <div class="jester-card" style="background: transparent; border: none; padding: 0;">
-        <input type="text" class="input-redeem" placeholder="🔑 Enter code">
-        <button class="btn-redeem">✓ Redeem</button>
-    </div>
-
-    <div class="stats-bottom" style="margin-top: 10px;">
-        <div class="stat-box">
-            <div class="title">👥 Total users</div>
-            <div class="value">36792</div>
+            <div class="grid-2" style="margin-top: 5px;">
+                <div class="action-card" style="text-align: center;">
+                    <div style="font-size: 10px; color: var(--text-muted);">👥 Total Users</div>
+                    <div style="font-size: 16px; font-weight: 800; color: #fff;">1,024</div>
+                </div>
+                <div class="action-card" style="text-align: center;">
+                    <div style="font-size: 10px; color: var(--text-muted);">🟢 Status Server</div>
+                    <div style="font-size: 16px; font-weight: 800; color: #00d2ff;">ONLINE</div>
+                </div>
+            </div>
+            
+            <button class="btn btn-outline" style="margin-top: 10px; border-color: #ef4444; color: #ef4444;" onclick="logout()">LOGOUT</button>
         </div>
-        <div class="stat-box">
-            <div class="title">⚡ Senders ready</div>
-            <div class="value">92</div>
-        </div>
-    </div>
-
-    <div class="premium-card">
-        <div class="title"><span style="color: #eab308;">⚡</span> Upgrade to Premium</div>
-        <div class="text-green" style="font-weight: 700; font-size: 13px;">Rp 8.000</div>
-    </div>
-    
-    <button class="btn-buka" style="margin-top: 15px; border-color: #ef4444; color: #ef4444;" onclick="logout()">Keluar Akun</button>
-</div>
-
-        
 
 </div>
             <!-- SOCIAL MEDIA ROW DENGAN LOGO APLIKASI ASLI -->
@@ -731,7 +630,6 @@
                 </a>
             </div>
         </div>
-    </div>
 
     <!-- MODAL LOGIN -->
     <div class="modal-overlay" id="loginModal">
@@ -789,26 +687,30 @@
         function closeLoginModal() {
             document.getElementById('loginModal').style.display = 'none';
         }
-
         // Proses Login
         function handleLogin() {
             const userIn = document.getElementById('loginUser').value.trim();
             const passIn = document.getElementById('loginPass').value.trim();
 
+            // Cek ke database.js
             const foundUser = databaseAkun.find(acc => acc.username === userIn && acc.password === passIn);
 
             if (foundUser) {
-                alert(`Login Berhasil! Selamat datang, ${foundUser.username} (${foundUser.role.toUpperCase()})`);
                 closeLoginModal();
 
+                // Ganti Layar
                 document.getElementById('home-view').style.display = 'none';
                 document.getElementById('dashboard-view').style.display = 'flex';
+                
+                // Injeksi Data ke UI
                 document.getElementById('display-username').textContent = foundUser.username;
+                document.getElementById('display-avatar').textContent = foundUser.username.charAt(0).toUpperCase();
                 document.getElementById('display-role').textContent = foundUser.role;
             } else {
                 alert("Username atau Password salah!");
             }
         }
+
 
         function logout() {
             document.getElementById('home-view').style.display = 'flex';
