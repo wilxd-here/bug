@@ -34,7 +34,7 @@
             display: flex;
             justify-content: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-y: auto; /* Mengaktifkan Scroll */
         }
 
         .app-container {
@@ -46,11 +46,11 @@
             display: flex;
             flex-direction: column;
             padding: 20px;
-            overflow: hidden;
+            overflow-y: auto; /* Mengaktifkan Scroll Container */
         }
 
         .video-bg {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover;
             z-index: 0;
@@ -59,14 +59,14 @@
         }
 
         .bg-overlay {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, transparent 20%, var(--bg-dark) 90%);
             z-index: 0;
             pointer-events: none;
         }
 
-        /* START CLICKBAIT OVERLAY */
+        /* START OVERLAY */
         #start-overlay {
             position: fixed;
             inset: 0;
@@ -103,7 +103,7 @@
 
         /* INTRO SCREEN */
         #intro-screen {
-            position: absolute;
+            position: fixed;
             inset: 0;
             background: #030712;
             z-index: 100;
@@ -147,7 +147,7 @@
             z-index: 1;
             display: flex;
             flex-direction: column;
-            height: 100%;
+            min-height: 100%;
             opacity: 0;
             transition: opacity 0.8s ease;
         }
@@ -156,7 +156,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         
         .logo-area {
@@ -164,17 +164,6 @@
             align-items: center;
             gap: 10px;
         }
-        
-        .header-logo-img {
-            width: 36px; height: 36px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 1px solid var(--primary-blue);
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
-
-        .logo-text h1 { font-size: 13px; letter-spacing: 1px; font-family: 'Orbitron', sans-serif; color: #fff; }
-        .logo-text p { font-size: 10px; color: var(--primary-blue); font-weight: 600; }
 
         .badge {
             background: rgba(0, 0, 0, 0.6);
@@ -190,64 +179,11 @@
             background: #00d2ff; border-radius: 50%; box-shadow: 0 0 8px #00d2ff;
         }
 
-        .center-logo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 10px 0 15px 0;
-            width: 100%;
-        }
-
-        /* UKURAN LOGO DIBUAT 50% AREA DAN KOTAK PRESISI */
-        .main-logo-wrapper {
-            position: relative;
-            width: 50%;
-            aspect-ratio: 1 / 1;
-        }
-
-        .main-logo-img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
-            border: 2px solid rgba(0, 210, 255, 0.4);
-            box-shadow: 0 0 25px rgba(0, 210, 255, 0.3);
-            position: relative; z-index: 2;
-        }
-
-        .brand-title {
-            text-align: center;
-            margin-bottom: 12px;
-        }
-        .brand-title h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            background: linear-gradient(180deg, #ffffff 0%, #00d2ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2px;
-        }
-        .brand-title p {
-            font-size: 10px;
-            letter-spacing: 3px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-        .clock {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 13px;
-            color: var(--primary-blue);
-            letter-spacing: 2px;
-        }
-
         .btn-group {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-top: 5px;
+            margin-top: 15px;
         }
         
         .btn {
@@ -305,10 +241,6 @@
             text-decoration: none;
             transition: border-color 0.2s, transform 0.2s;
         }
-        .social-item:hover {
-            border-color: var(--primary-blue);
-            transform: translateY(-2px);
-        }
 
         .social-icon-svg {
             width: 18px;
@@ -320,10 +252,6 @@
             font-size: 9px;
             color: var(--text-muted);
             font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
         }
 
         /* MODAL LOGIN */
@@ -353,38 +281,6 @@
             position: relative;
         }
 
-        .login-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .input-group label {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .input-group input {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 12px 15px;
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .input-group input:focus {
-            border-color: var(--primary-blue);
-        }
-
         .close-modal {
             position: absolute;
             top: 15px; right: 20px;
@@ -399,8 +295,7 @@
             display: none;
             flex-direction: column;
             gap: 12px;
-            padding-bottom: 20px;
-            margin-top: 10px;
+            padding-bottom: 30px;
             z-index: 5;
         }
 
@@ -444,11 +339,39 @@
             width: fit-content;
             letter-spacing: 0.5px;
         }
+
+        /* MANAGERS BUTTON ROW */
+        .btn-manage-row {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+        .btn-manage {
+            flex: 1;
+            text-decoration: none;
+        }
+        .btn-manage-box {
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            height: 100%;
+        }
+        .btn-manage-box span {
+            font-size: 10px;
+            font-weight: 800;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.5px;
+        }
     </style>
 
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/jpeg" href="Logo2.jpg">
-    <link rel="apple-touch-icon" href="Logo2.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="apple-touch-icon" href="logo.jpg">
     <meta name="theme-color" content="#030712">
 
     <!-- DATABASE AKUN -->
@@ -456,54 +379,36 @@
 </head>
 <body>
 
-    <!-- START OVERLAY (CLICKBAIT START) -->
+    <!-- START OVERLAY -->
     <div id="start-overlay" onclick="enterVoid()">
         <div class="start-btn">⚡ ENTER VOID ⚡</div>
         <p style="font-size: 10px; color: var(--text-muted); font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">KLIK DI MANA SAJA UNTUK MEMULAI</p>
     </div>
 
-    <!-- BACKGROUND MUSIC -->
-    <audio id="bg-music" loop preload="auto">
+    <!-- BACKGROUND MUSIC (Atribut loop dihapus agar tersinkron otomatis via JS) -->
+    <audio id="bg-music" preload="auto">
         <source src="music.mp3" type="audio/mp3">
     </audio>
 
     <!-- INTRO ANIMATION SCREEN -->
     <div id="intro-screen">
-        <div id="intro-1" class="intro-text">Welcome</div>
-        <div id="intro-2" class="intro-text">xaerisoft</div>
-        <div id="intro-3" class="intro-text">poweredby Wil</div>
+        <div id="intro-1" class="intro-text">— Welcome — </div>
+        <div id="intro-2" class="intro-text">— xaerisoft —</div>
+        <div id="intro-3" class="intro-text">— poweredby Wil —</div>
     </div>
 
     <!-- MAIN APP CONTAINER -->
     <div class="app-container">
-        <video id="bg-video" class="video-bg" loop muted playsinline preload="auto">
+        <!-- BACKGROUND VIDEO (Atribut loop dihapus agar tersinkron otomatis via JS) -->
+        <video id="bg-video" class="video-bg" muted playsinline preload="auto">
             <source src="background.mp4" type="video/mp4">
         </video>
         <div class="bg-overlay"></div>
 
         <div class="content" id="main-content">
             <header>
-                <div class="logo-area">
-                    <img src="Logo2.jpg" alt="logo" class="header-logo-img" onerror="this.style.display='none'">
-                    <div class="logo-text">
-                        <h1>XAERISOFT VOID</h1>
-                        <p>Poweredby Wil</p>
-                    </div>
-                </div>
                 <div class="badge online">ONLINE</div>
             </header>
-
-            <div class="center-logo-container">
-                <div class="main-logo-wrapper">
-                    <img src="Logo2.jpg" alt="Logo" class="main-logo-img">
-                </div>
-            </div>
-
-            <div class="brand-title">
-                <h2>XAERISOFT</h2>
-                <p>V O I D</p>
-                <div class="clock" id="live-clock">00:00:00</div>
-            </div>
 
             <!-- HOME VIEW (Tampil Sebelum Login) -->
             <div id="home-view">
@@ -520,31 +425,34 @@
                 </div>
 
                 <!-- SOCIAL MEDIA ROW -->
-                <div class="social-row">
-                    <a href="https://wa.me/62895384482069" target="_blank" class="social-item">
-                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984 0 1.762.459 3.48 1.332 5.001L2 22l5.12-1.334c1.464.798 3.115 1.218 4.887 1.219h.005c5.507 0 9.991-4.479 9.992-9.985 0-2.668-1.039-5.177-2.927-7.064C17.189 3.039 14.68 2 12.012 2zm0 18.33h-.004c-1.493 0-2.957-.401-4.233-1.161l-.304-.18-3.04.797.811-2.964-.198-.315c-.836-1.33-1.278-2.872-1.277-4.453 0-4.593 3.738-8.331 8.334-8.331 2.225 0 4.316.867 5.89 2.442s2.44 3.666 2.439 5.891c0 4.594-3.738 8.331-8.334 8.331z"/></svg>
-                        <span class="social-text">WhatsApp</span>
-                    </a>
-                    <a href="https://t.me/xaerisoft" target="_blank" class="social-item">
-                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
-                        <span class="social-text">Telegram</span>
-                    </a>
-                    <a href="https://tiktok.com" target="_blank" class="social-item">
-                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.29 0 .56.05.82.13V9.4a6.34 6.34 0 00-.82-.05A6.33 6.33 0 003.15 15.7a6.33 6.33 0 0010.82 4.47v-7.14a8.27 8.27 0 005.62 2.13v-3.47a4.86 4.86 0 01-2-.69z"/></svg>
-                        <span class="social-text">TikTok</span>
-                    </a>
-                    <a href="https://youtube.com" target="_blank" class="social-item">
-                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.77-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
-                        <span class="social-text">YouTube</span>
-                    </a>
-                </div>
-            </div>
+<div class="social-row">
+    <a href="https://tiktok.com/@xaerisoft" target="_blank" class="social-item">
+        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.29 0 .56.05.82.13V9.4a6.34 6.34 0 00-.82-.05A6.33 6.33 0 003.15 15.7a6.33 6.33 0 0010.82 4.47v-7.14a8.27 8.27 0 005.62 2.13v-3.47a4.86 4.86 0 01-2-.69z"/></svg>
+        <span class="social-text">TikTok</span>
+    </a>
+    
+    <a href="https://youtube.com@" target="_blank" class="social-item">
+        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.77-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
+        <span class="social-text">YouTube</span>
+    </a>
 
-                <!-- DASHBOARD VIEW (Tampil Sesudah Login) -->
+    <a href="https://www.instagram.com/bknwil?igsi=aXhyZW0ybjc5NWU3" target="_blank" class="social-item">
+        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        <span class="social-text">Instagram</span>
+    </a>
+    
+    <a href="https://t.me/@wilajaa" target="_blank" class="social-item">
+        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+        <span class="social-text">Telegram</span>
+    </a>
+</div>
+
+            <!-- DASHBOARD VIEW (Tampil Sesudah Login) -->
             <div id="dashboard-view">
-                <!-- Video Widget Banner -->
-                <a href="vidio.mp4" style="text-decoration: none; display: block; margin-bottom: 12px;">
-                    <div class="void-card" style="padding: 10px; text-align: center; transition: 0.2s;">
+                <!-- GABUNGAN VIDEO & PROFILE BOX (DINAIKKAN KE ATAS) -->
+                <div class="void-card" style="padding: 12px;">
+                    <!-- Video Section -->
+                    <a href="vidio.mp4" style="text-decoration: none; display: block; margin-bottom: 12px;">
                         <div style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border);">
                             <video src="vidio.mp4" autoplay loop muted playsinline style="width: 100%; height: 150px; object-fit: cover; display: block; opacity: 0.8;"></video>
                             <div style="position: absolute; inset: 0; background: rgba(3, 7, 18, 0.4); display: flex; justify-content: center; align-items: center;">
@@ -553,13 +461,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="font-size: 11px; color: var(--primary-blue); font-weight: 700; letter-spacing: 1.5px; font-family: 'Orbitron', sans-serif; margin-top: 12px;">X A E R I S O F T   M E D I A</div>
-                    </div>
-                </a>
+                        <div style="font-size: 11px; color: var(--primary-blue); font-weight: 700; letter-spacing: 1.5px; font-family: 'Orbitron', sans-serif; text-align: center; margin-top: 8px;">X A E R I S O F T   M E D I A</div>
+                    </a>
 
-                <!-- Profile Box -->
-                <div class="void-card">
-                    <div class="profile-row">
+                    <!-- Profile Section -->
+                    <div class="profile-row" style="border-top: 1px solid var(--glass-border); padding-top: 12px;">
                         <div class="profile-left">
                             <div class="profile-avatar" id="display-avatar">W</div>
                             <div class="profile-info">
@@ -571,8 +477,8 @@
                     </div>
                 </div>
 
-                <!-- Widget Cuaca Real-Time -->
-                <div class="void-card" id="weather-widget" style="padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-top: -4px;">
+       <!-- Widget Cuaca Real-Time (Fungsional) -->
+                <div class="void-card" id="weather-widget" style="padding: 12px; display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <div id="weather-icon" style="font-size: 26px; text-shadow: 0 0 10px var(--accent-glow);">🌍</div>
                         <div style="display: flex; flex-direction: column; gap: 2px;">
@@ -585,12 +491,18 @@
                     </button>
                 </div>
 
-                <!-- Manage Bug Sender Card -->
-                <div style="display: flex; justify-content: flex-start; margin-top: 4px;">
-                    <a href="#" style="text-decoration: none;">
-                        <div class="void-card" style="padding: 10px 14px; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.1); display: flex; align-items: center; gap: 8px; box-shadow: 0 0 12px rgba(239, 68, 68, 0.2); cursor: pointer; transition: 0.2s;">
+                <!-- Tombol Bug Manager Bersebelahan (Sender & Popup) -->
+                <div class="btn-manage-row">
+                    <a href="#" class="btn-manage">
+                        <div class="void-card btn-manage-box" style="border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.1); box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);">
                             <span style="font-size: 14px;">🪲</span>
-                            <span style="font-size: 10px; font-weight: 800; color: #ef4444; font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">MANAGE BUG SENDER</span>
+                            <span style="color: #ef4444;">BUG SENDER</span>
+                        </div>
+                    </a>
+                    <a href="#" class="btn-manage">
+                        <div class="void-card btn-manage-box" style="border-color: rgba(0, 210, 255, 0.4); background: rgba(0, 210, 255, 0.1); box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);">
+                            <span style="font-size: 14px;">💬</span>
+                            <span style="color: #00d2ff;">BUG POPUP</span>
                         </div>
                     </a>
                 </div>
@@ -622,18 +534,27 @@
     </div>
 
     <script>
+        const bgVideo = document.getElementById('bg-video');
+        const bgMusic = document.getElementById('bg-music');
+
+        // Sinkronisasi Video dan Musik saat Putar Ulang (Looping Presisi)
+        bgVideo.addEventListener('ended', () => {
+            bgVideo.currentTime = 0;
+            bgMusic.currentTime = 0;
+            bgVideo.play();
+            bgMusic.play();
+        });
+
         // Fungsi pemicu saat overlay Start di-klik
         function enterVoid() {
             const overlay = document.getElementById('start-overlay');
             const intro = document.getElementById('intro-screen');
-            const music = document.getElementById('bg-music');
-            const video = document.getElementById('bg-video');
 
-            if (music) {
-                music.play().catch(e => console.log("Audio play error:", e));
+            if (bgMusic) {
+                bgMusic.play().catch(e => console.log("Audio play error:", e));
             }
-            if (video) {
-                video.play().catch(e => console.log("Video play error:", e));
+            if (bgVideo) {
+                bgVideo.play().catch(e => console.log("Video play error:", e));
             }
 
             overlay.style.opacity = '0';
@@ -656,16 +577,39 @@
             }, 500);
         }
 
-        // Jam Real-time
-        function updateClock() {
-            const now = new Date();
-            let h = now.getHours().toString().padStart(2, '0');
-            let m = now.getMinutes().toString().padStart(2, '0');
-            let s = now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('live-clock').textContent = `${h}:${m}:${s}`;
+        // Fitur Weather Realtime (Geolocation & API Open-Meteo)
+        async function getRealtimeWeather() {
+            const tempEl = document.getElementById('weather-temp');
+            const descEl = document.getElementById('weather-desc');
+            const iconEl = document.getElementById('weather-icon');
+            
+            descEl.textContent = "MENCARI LOKASI...";
+            
+            if (!navigator.geolocation) {
+                descEl.textContent = "GEOLOCATION TIDAK DUKUNG";
+                return;
+            }
+            
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                descEl.textContent = "MENGAMBIL CUACA...";
+                
+                try {
+                    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                    const data = await res.json();
+                    if (data.current_weather) {
+                        tempEl.textContent = `${Math.round(data.current_weather.temperature)}°C`;
+                        descEl.textContent = "SINKRON BERHASIL";
+                        iconEl.textContent = "☀️";
+                    }
+                } catch (e) {
+                    descEl.textContent = "GAGAL SINKRON";
+                }
+            }, () => {
+                descEl.textContent = "IZIN LOKASI DITOLAK";
+            });
         }
-        setInterval(updateClock, 1000);
-        updateClock();
 
         // Modal Control
         function openLoginModal() {
@@ -691,6 +635,9 @@
                 document.getElementById('display-username').textContent = foundUser.username;
                 document.getElementById('display-avatar').textContent = foundUser.username.charAt(0).toUpperCase();
                 document.getElementById('display-role').textContent = foundUser.role;
+
+                // Sinkronkan cuaca otomatis saat masuk ke dashboard
+                getRealtimeWeather();
             } else {
                 alert("Username atau Password salah!");
             }
