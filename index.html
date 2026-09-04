@@ -538,9 +538,6 @@
                     💬 BUY AKUN HUBUNGI ADMIN (WA)
                 </a>
             </div>
-
-                <!-- DASHBOARD VIEW -->
-        < id="dashboard-view">
                   <!-- DASHBOARD VIEW (CLEAN MODE + VIDEO WIDGET) -->
         <div id="dashboard-view">
             
@@ -598,21 +595,70 @@
                     </div>
       
                 </div>
-            </div>
- <!-- Widget Cuaca Real-Time (BARU) -->
-            <div class="void-card" id="weather-widget" style="padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-top: -4px;">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div id="weather-icon" style="font-size: 26px; text-shadow: 0 0 10px var(--accent-glow);">🌍</div>
-                    <div style="display: flex; flex-direction: column; gap: 2px;">
-                        <div id="weather-temp" style="font-size: 16px; font-weight: 800; color: #fff;">--°C</div>
-                        <div id="weather-desc" style="font-size: 9px; color: var(--text-muted); font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">SINKRON LOKASI...</div>
+            </div>            <!-- DASHBOARD VIEW -->
+            <div id="dashboard-view">
+                
+                <!-- Video Widget Banner -->
+                <a href="vidio.mp4" style="text-decoration: none; display: block; margin-bottom: 12px;">
+                    <div class="void-card" style="padding: 10px; text-align: center; transition: 0.2s;">
+                        <div style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border);">
+                            <video src="vidio.mp4" autoplay loop muted playsinline style="width: 100%; height: 150px; object-fit: cover; display: block; opacity: 0.8;"></video>
+                            <div style="position: absolute; inset: 0; background: rgba(3, 7, 18, 0.4); display: flex; justify-content: center; align-items: center;">
+                                <div style="width: 45px; height: 45px; background: rgba(0, 212, 255, 0.15); border: 2px solid var(--primary-blue); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--primary-blue); font-size: 16px; backdrop-filter: blur(5px); box-shadow: 0 0 15px var(--accent-glow);">
+                                    ▶
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--primary-blue); font-weight: 700; letter-spacing: 1.5px; font-family: 'Orbitron', sans-serif; margin-top: 12px;">X A E R I S O F T   M E D I A</div>
+                    </div>
+                </a>
+
+                <!-- Profile Box -->
+                <div class="void-card">
+                    <div class="profile-row">
+                        <div class="profile-left">
+                            <div class="profile-avatar" id="display-avatar">W</div>
+                            <div class="profile-info">
+                                <div class="profile-name" id="display-username">Wilzie</div>
+                                <div class="profile-role" id="display-role">OWNER</div>
+                                <div class="profile-expired">EXPIRED: PERMANEN</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button onclick="getRealtimeWeather()" style="background: rgba(0, 212, 255, 0.1); border: 1px solid var(--primary-blue); color: var(--primary-blue); padding: 6px 10px; border-radius: 8px; font-size: 9px; font-weight: 800; font-family: 'Orbitron', sans-serif; cursor: pointer; transition: 0.2s;">
-                    SINKRON
-                </button>
-            </div>
 
+                <!-- Widget Cuaca Real-Time -->
+                <div class="void-card" id="weather-widget" style="padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-top: -4px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div id="weather-icon" style="font-size: 26px; text-shadow: 0 0 10px var(--accent-glow);">🌍</div>
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <div id="weather-temp" style="font-size: 16px; font-weight: 800; color: #fff;">--°C</div>
+                            <div id="weather-desc" style="font-size: 9px; color: var(--text-muted); font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">SINKRON LOKASI...</div>
+                        </div>
+                    </div>
+                    <button onclick="getRealtimeWeather()" style="background: rgba(0, 212, 255, 0.1); border: 1px solid var(--primary-blue); color: var(--primary-blue); padding: 6px 10px; border-radius: 8px; font-size: 9px; font-weight: 800; font-family: 'Orbitron', sans-serif; cursor: pointer; transition: 0.2s;">
+                        SINKRON
+                    </button>
+                </div>
+
+                <!-- Spacer biar tombol logout otomatis ke dorong ke bawah -->
+                <div style="flex-grow: 1; min-height: 20px;"></div>
+                
+                <!-- Tombol Logout -->
+                <button class="btn btn-outline" style="border-color: #ef4444; color: #ef4444;" onclick="logout()">LOGOUT</button>
+            </div>
+ <!-- Spacer biar elemen di bawahnya ketarik ke dasar layar -->
+                <div style="flex-grow: 1; min-height: 20px;"></div>
+                
+                <!-- Manage Bug Sender Card (Atas Kiri Tombol Logout) -->
+                <div style="display: flex; justify-content: flex-start; margin-bottom: 12px;">
+                    <a href="#" style="text-decoration: none;">
+                        <div class="void-card" style="padding: 10px 14px; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.1); display: flex; align-items: center; gap: 8px; box-shadow: 0 0 12px rgba(239, 68, 68, 0.2); cursor: pointer; transition: 0.2s;">
+                            <span style="font-size: 14px;">🪲</span>
+                            <span style="font-size: 10px; font-weight: 800; color: #ef4444; font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">MANAGE BUG SENDER</span>
+                        </div>
+                    </a>
+                </div>
 </div>
             <!-- SOCIAL MEDIA ROW DENGAN LOGO APLIKASI ASLI -->
             <div class="social-row">
