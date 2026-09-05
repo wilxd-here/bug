@@ -430,6 +430,48 @@
         /* Khusus Warna Merah untuk WhatsApp Attack */
         .nav-item.wa-attack { color: #ef4444; }
         .nav-item.wa-attack svg { filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6)); }
+              /* WIDGET JADWAL SHOLAT */
+        .sholat-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            /* Sembunyikan scrollbar bawaan tapi tetap bisa di-scroll */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .sholat-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .sholat-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px 15px;
+            min-width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            transition: 0.3s;
+        }
+        
+        /* Highlight Warna Orange untuk Waktu Aktif */
+        .sholat-card.active {
+            border-color: #f97316;
+            background: rgba(249, 115, 22, 0.1);
+            box-shadow: 0 0 12px rgba(249, 115, 22, 0.2);
+        }
+        .sholat-card.active .sholat-name, .sholat-card.active .sholat-time {
+            color: #f97316;
+        }
+
+        .sholat-icon { font-size: 16px; }
+        .sholat-name { font-size: 9px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; }
+        .sholat-time { font-size: 13px; font-weight: 800; color: #fff; font-family: 'Orbitron', sans-serif; }
+
 
     </style>
 
@@ -559,6 +601,36 @@
                         </div>
                     </div>
                     <div id="calendar-clock" style="font-size: 13px; font-weight: 800; color: var(--text-main); font-family: 'Orbitron', sans-serif; background: rgba(0, 212, 255, 0.1); padding: 6px 10px; border-radius: 8px; border: 1px solid var(--primary-blue); box-shadow: 0 0 10px var(--accent-glow);">00:00:00</div>
+                </div>
+                <!-- WIDGET JADWAL SHOLAT REAL-TIME -->
+                <div class="void-card" style="padding: 15px; display: flex; flex-direction: column; gap: 15px;">
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 8px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 800; color: #fff; letter-spacing: 1px;">
+                            🕌 JADWAL SHOLAT
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 20px; padding: 5px 10px; font-size: 9px; font-family: 'Orbitron', sans-serif; color: var(--text-muted); display: flex; align-items: center; gap: 5px;">
+                            ⏱ MENUJU <span id="next-prayer-name">...</span> : <span id="next-prayer-countdown" style="color: #fff;">00:00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="sholat-scroll">
+                        <div class="sholat-card" id="card-Fajr">
+                            <span class="sholat-icon">🌙</span><span class="sholat-name">Subuh</span><span class="sholat-time" id="time-Fajr">--:--</span>
+                        </div>
+                        <div class="sholat-card" id="card-Dhuhr">
+                            <span class="sholat-icon">☀️</span><span class="sholat-name">Dzuhur</span><span class="sholat-time" id="time-Dhuhr">--:--</span>
+                        </div>
+                        <div class="sholat-card" id="card-Asr">
+                            <span class="sholat-icon">☁️</span><span class="sholat-name">Ashar</span><span class="sholat-time" id="time-Asr">--:--</span>
+                        </div>
+                        <div class="sholat-card" id="card-Maghrib">
+                            <span class="sholat-icon">🌆</span><span class="sholat-name">Maghrib</span><span class="sholat-time" id="time-Maghrib">--:--</span>
+                        </div>
+                        <div class="sholat-card" id="card-Isha">
+                            <span class="sholat-icon">🌌</span><span class="sholat-name">Isya</span><span class="sholat-time" id="time-Isha">--:--</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- TOMBOL MANAGE -->
@@ -722,6 +794,78 @@
             document.getElementById('loginUser').value = '';
             document.getElementById('loginPass').value = '';
         }
+              // FUNGSI JADWAL SHOLAT & COUNTDOWN REAL-TIME
+        async function fetchPrayerTimes() {
+            try {
+                // Kamu bisa ganti "Depok" dengan kota lain di URL ini
+                const url = 'https://api.aladhan.com/v1/timingsByCity?city=Depok&country=Indonesia&method=11';
+                const response = await fetch(url);
+                const data = await response.json();
+                const timings = data.data.timings;
+                
+                const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+                const prayerNamesIndo = { 'Fajr': 'SUBUH', 'Dhuhr': 'DZUHUR', 'Asr': 'ASHAR', 'Maghrib': 'MAGHRIB', 'Isha': 'ISYA' };
+                
+                // Masukkan jam sholat ke HTML
+                prayers.forEach(p => {
+                    document.getElementById(`time-${p}`).textContent = timings[p];
+                });
+
+                function updatePrayerCountdown() {
+                    const now = new Date();
+                    let nextPrayer = null;
+                    let nextPrayerTimeObj = null;
+
+                    // Cari waktu sholat selanjutnya hari ini
+                    for (let p of prayers) {
+                        const [hours, minutes] = timings[p].split(':');
+                        const pTime = new Date();
+                        pTime.setHours(hours, minutes, 0, 0);
+
+                        if (now < pTime) {
+                            nextPrayer = p;
+                            nextPrayerTimeObj = pTime;
+                            break;
+                        }
+                    }
+
+                    // Jika sudah lewat Isya, berarti menunggu Subuh besok
+                    if (!nextPrayer) {
+                        nextPrayer = 'Fajr';
+                        const [hours, minutes] = timings['Fajr'].split(':');
+                        nextPrayerTimeObj = new Date();
+                        nextPrayerTimeObj.setDate(nextPrayerTimeObj.getDate() + 1); // Besok
+                        nextPrayerTimeObj.setHours(hours, minutes, 0, 0);
+                    }
+
+                    // Kalkulasi selisih waktu
+                    const diff = nextPrayerTimeObj - now;
+                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    // Update Teks Menuju Sholat & Hitung Mundur
+                    document.getElementById('next-prayer-name').textContent = prayerNamesIndo[nextPrayer];
+                    document.getElementById('next-prayer-countdown').textContent = 
+                        `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+                    // Hapus semua class aktif, lalu nyalakan highlight di jadwal selanjutnya
+                    prayers.forEach(p => document.getElementById(`card-${p}`).classList.remove('active'));
+                    document.getElementById(`card-${nextPrayer}`).classList.add('active');
+                }
+
+                // Jalankan countdown setiap 1 detik
+                setInterval(updatePrayerCountdown, 1000);
+                updatePrayerCountdown();
+                
+            } catch (error) {
+                console.error("Gagal mengambil jadwal sholat:", error);
+            }
+        }
+
+        // Panggil fiturnya
+        fetchPrayerTimes();
+
     </script>
 </body>
 </html>
