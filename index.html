@@ -626,6 +626,63 @@
             letter-spacing: 2px;
             text-shadow: 0 0 10px var(--accent-glow);
         }
+      /* Styling untuk Horizontal Scroll Bug Menu */
+.bug-scroll-container {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.bug-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.bug-option-card {
+    min-width: 140px;
+    flex: 0 0 auto;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 16px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+    scroll-snap-align: start;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.bug-option-card.selected {
+    border-color: var(--primary-blue);
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+.bug-dots {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.bug-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: 0.3s;
+}
+
+.bug-dot.active {
+    width: 16px;
+    border-radius: 4px;
+    background: var(--primary-blue);
+}
+
 
     </style>
 
@@ -929,11 +986,50 @@
 
             <div class="input-group">
                 <label style="color: #ef4444; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 10px;">🐞 PILIH BUG</label>
-                <select id="selectBugType" style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 12px; padding: 12px; color: #fff; font-size: 12px; outline: none;">
-                    <option value="CRASH UI [ BUG NUMBER ]">CRASH UI [ BUG NUMBER ] (xfcui)</option>
-                    <option value="HARD DELAY ATTACK">HARD DELAY ATTACK (v2.0)</option>
-                    <option value="NULL POINTER CRASH">NULL POINTER CRASH (vip)</option>
-                </select>
+                  
+    <!-- Container Scroll Horizontal -->
+    <div class="bug-scroll-container" id="bugScrollContainer">
+        <div class="bug-option-card selected" onclick="selectBugCard(this, 'CRASH UI [ BUG NUMBER ]')">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 18px;">🛡️</span>
+                <span class="check-icon" style="color: var(--primary-blue); font-size: 12px;">●</span>
+            </div>
+            <div>
+                <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">CRASH Ui</div>
+                <div style="font-size: 9px; color: var(--primary-blue); margin-top: 2px;">android</div>
+            </div>
+        </div>
+
+        <div class="bug-option-card" onclick="selectBugCard(this, 'HARD DELAY ATTACK')">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 18px;">⚡</span>
+                <span class="check-icon" style="color: transparent; font-size: 12px;">●</span>
+            </div>
+            <div>
+                <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">DELAY v2</div>
+                <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">global</div>
+            </div>
+        </div>
+
+        <div class="bug-option-card" onclick="selectBugCard(this, 'NULL POINTER CRASH')">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 18px;">🔥</span>
+                <span class="check-icon" style="color: transparent; font-size: 12px;">●</span>
+            </div>
+            <div>
+                <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">NULL PTR</div>
+                <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">vip</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Indikator Dots -->
+    <div class="bug-dots">
+        <div class="bug-dot active"></div>
+        <div class="bug-dot"></div>
+        <div class="bug-dot"></div>
+    </div>
+            </div>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 6px;">
@@ -1296,6 +1392,44 @@
                 }
             }, 100);
         }
+      
+      let selectedBugValue = 'CRASH UI [ BUG NUMBER ]';
+
+function selectBugCard(element, bugValue) {
+    selectedBugValue = bugValue;
+    document.getElementById('selectBugType').value = bugValue;
+
+    // Hapus kelas selected dan reset indikator centang dari semua card
+    document.querySelectorAll('.bug-option-card').forEach(card => {
+        card.classList.remove('selected');
+        card.querySelector('.check-icon').style.color = 'transparent';
+        card.querySelector('div:nth-child(2) div:nth-child(2)').style.color = 'var(--text-muted)';
+    });
+
+    // Tambahkan ke card yang diklik
+    element.classList.add('selected');
+    element.querySelector('.check-icon').style.color = 'var(--primary-blue)';
+    element.querySelector('div:nth-child(2) div:nth-child(2)').style.color = 'var(--primary-blue)';
+}
+
+// Deteksi geseran scroll untuk mengubah titik aktif (dots)
+const bugContainer = document.getElementById('bugScrollContainer');
+if (bugContainer) {
+    bugContainer.addEventListener('scroll', () => {
+        const cards = bugContainer.querySelectorAll('.bug-option-card');
+        const dots = document.querySelectorAll('.bug-dot');
+        
+        let index = Math.round(bugContainer.scrollLeft / (cards[0].offsetWidth + 12));
+        dots.forEach((dot, i) => {
+            if (i === index) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    });
+}
+
     </script>
 </body>
 </html>
