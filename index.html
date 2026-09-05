@@ -315,7 +315,6 @@
             flex-direction: column;
             gap: 12px;
             padding-bottom: 90px; 
-            /* Dihapus: z-index: 5; karena sudah ada konteks tumpukan (stacking context) yang lebih baik */
         }
 
         .void-card {
@@ -626,64 +625,62 @@
             letter-spacing: 2px;
             text-shadow: 0 0 10px var(--accent-glow);
         }
-      /* Styling untuk Horizontal Scroll Bug Menu */
-.bug-scroll-container {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    scroll-snap-type: x mandatory;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-.bug-scroll-container::-webkit-scrollbar {
-    display: none;
-}
+  /* Styling untuk Horizontal Scroll Bug Menu */
+        .bug-scroll-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .bug-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
 
-.bug-option-card {
-    min-width: 140px;
-    flex: 0 0 auto;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    border-radius: 16px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    cursor: pointer;
-    scroll-snap-align: start;
-    transition: all 0.3s ease;
-    position: relative;
-}
+        .bug-option-card {
+            min-width: 140px;
+            flex: 0 0 auto;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            cursor: pointer;
+            scroll-snap-align: start;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-.bug-option-card.selected {
-    border-color: var(--primary-blue);
-    background: rgba(0, 212, 255, 0.1);
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-}
+        .bug-option-card.selected {
+            border-color: var(--primary-blue);
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
 
-.bug-dots {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    margin-top: 5px;
-}
+        .bug-dots {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
 
-.bug-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    transition: 0.3s;
-}
+        .bug-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: 0.3s;
+        }
 
-.bug-dot.active {
-    width: 16px;
-    border-radius: 4px;
-    background: var(--primary-blue);
-}
-
-
+        .bug-dot.active {
+            width: 16px;
+            border-radius: 4px;
+            background: var(--primary-blue);
+        }
     </style>
 
     <link rel="manifest" href="manifest.json">
@@ -717,6 +714,9 @@
             <source src="background.mp4" type="video/mp4">
         </video>
         <div class="bg-overlay"></div>
+
+        <!-- PERBAIKAN: STRUKTUR PEMBUNGKUS MAIN-CONTENT AGAR JS TIDAK ERROR -->
+        <div class="content" id="main-content">
 
             <div id="home-view">
                 <header>
@@ -851,7 +851,6 @@
                 </div>
 
                 <div class="btn-manage-row">
-                    <!-- DIRUBAH MENJADI DIV SUPAYA LEBIH SEMANTIK DAN MENGHINDARI LOMPAT BROWSER -->
                     <div class="btn-manage" onclick="openSenderModal();">
                         <div class="void-card btn-manage-box" style="border-color: rgba(0, 212, 255, 0.4); background: rgba(0, 212, 255, 0.1); box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);">
                             <span style="font-size: 14px;">📱</span>
@@ -899,6 +898,10 @@
                     </div>
                 </div>
             </div> 
+
+        <!-- PERBAIKAN: DUA TAG PENUTUP UNTUK MEMBUNGKUS MAIN-CONTENT DAN APP-CONTAINER -->
+        </div> 
+    </div> 
                           
     <div class="modal-overlay" id="loginModal">
         <div class="login-card">
@@ -915,15 +918,13 @@
             <button class="btn btn-primary" onclick="handleLogin()" style="margin-top: 5px;">Masuk Sekarang</button>
         </div>
     </div>
-
-    <!-- MODAL MANAGE SENDER -->
+  <!-- MODAL MANAGE SENDER -->
     <div class="modal-overlay" id="senderModal">
         <div class="login-card">
             <button class="close-modal" onclick="closeSenderModal()">&times;</button>
             <h3 style="font-family: 'Orbitron', sans-serif; font-size: 14px; text-align: center; color: var(--primary-blue);">MANAGE SENDER</h3>
             <div class="input-group">
                 <label>Nomor WhatsApp Sender</label>
-                <!-- DIGANTI type="tel" UNTUK VALIDASI KEYBOARD HP -->
                 <input type="tel" id="senderPhone" placeholder="628xxxxxxxxxx">
             </div>
             <button class="btn btn-primary" onclick="requestPairingCode()">Dapatkan Kode Pairing</button>
@@ -935,7 +936,7 @@
         </div>
     </div> 
 
-        <!-- MODAL BUG EXECUTED -->
+    <!-- MODAL BUG EXECUTED -->
     <div class="modal-overlay" id="bugModal">
         <div class="bug-modal-card">
             <button class="close-modal" onclick="closeBugModal()">&times;</button>
@@ -1052,6 +1053,7 @@
             </button>
         </div>
     </div>
+    
     <!-- HIDDEN INPUT SELECT BUG TYPE -->
     <input type="hidden" id="selectBugType" value="CRASH UI [ BUG NUMBER ]">
 
@@ -1140,7 +1142,6 @@
             const userIn = document.getElementById('loginUser').value.trim();
             const passIn = document.getElementById('loginPass').value.trim();
             
-            // PERINGATAN: Di tahap produksi, cek autentikasi ini HARUS dilakukan di server!
             if(typeof databaseAkun !== 'undefined'){
                 const foundUser = databaseAkun.find(acc => acc.username === userIn && acc.password === passIn);
                 if (foundUser) {
@@ -1243,7 +1244,7 @@
             }
         });
 
-        document.getElementById('theme-input').addEventListener('input', function(event) {
+     document.getElementById('theme-input').addEventListener('input', function(event) {
             const color = event.target.value;
             const r = parseInt(color.substring(1,3), 16);
             const g = parseInt(color.substring(3,5), 16);
@@ -1311,7 +1312,6 @@
 
         function requestPairingCode() {
             let phoneInput = document.getElementById('senderPhone').value.trim();
-    // Validasi Input hanya angka dan opsional "+" di awal
             if (!/^\+?[0-9]{10,15}$/.test(phoneInput)) {
                 alert("Masukkan nomor WhatsApp yang valid! (Contoh: 628123456789)");
                 return;
@@ -1393,43 +1393,39 @@
             }, 100);
         }
       
-      let selectedBugValue = 'CRASH UI [ BUG NUMBER ]';
+        let selectedBugValue = 'CRASH UI [ BUG NUMBER ]';
 
-function selectBugCard(element, bugValue) {
-    selectedBugValue = bugValue;
-    document.getElementById('selectBugType').value = bugValue;
+        function selectBugCard(element, bugValue) {
+            selectedBugValue = bugValue;
+            document.getElementById('selectBugType').value = bugValue;
 
-    // Hapus kelas selected dan reset indikator centang dari semua card
-    document.querySelectorAll('.bug-option-card').forEach(card => {
-        card.classList.remove('selected');
-        card.querySelector('.check-icon').style.color = 'transparent';
-        card.querySelector('div:nth-child(2) div:nth-child(2)').style.color = 'var(--text-muted)';
-    });
+            document.querySelectorAll('.bug-option-card').forEach(card => {
+                card.classList.remove('selected');
+                card.querySelector('.check-icon').style.color = 'transparent';
+                card.querySelector('div:nth-child(2) div:nth-child(2)').style.color = 'var(--text-muted)';
+            });
 
-    // Tambahkan ke card yang diklik
-    element.classList.add('selected');
-    element.querySelector('.check-icon').style.color = 'var(--primary-blue)';
-    element.querySelector('div:nth-child(2) div:nth-child(2)').style.color = 'var(--primary-blue)';
-}
+            element.classList.add('selected');
+            element.querySelector('.check-icon').style.color = 'var(--primary-blue)';
+            element.querySelector('div:nth-child(2) div:nth-child(2)').style.color = 'var(--primary-blue)';
+        }
 
-// Deteksi geseran scroll untuk mengubah titik aktif (dots)
-const bugContainer = document.getElementById('bugScrollContainer');
-if (bugContainer) {
-    bugContainer.addEventListener('scroll', () => {
-        const cards = bugContainer.querySelectorAll('.bug-option-card');
-        const dots = document.querySelectorAll('.bug-dot');
-        
-        let index = Math.round(bugContainer.scrollLeft / (cards[0].offsetWidth + 12));
-        dots.forEach((dot, i) => {
-            if (i === index) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
-        });
-    });
-}
-
+        const bugContainer = document.getElementById('bugScrollContainer');
+        if (bugContainer) {
+            bugContainer.addEventListener('scroll', () => {
+                const cards = bugContainer.querySelectorAll('.bug-option-card');
+                const dots = document.querySelectorAll('.bug-dot');
+                
+                let index = Math.round(bugContainer.scrollLeft / (cards[0].offsetWidth + 12));
+                dots.forEach((dot, i) => {
+                    if (i === index) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>
