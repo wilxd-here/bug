@@ -718,7 +718,7 @@
         </video>
         <div class="bg-overlay"></div>
 
-        <div class="content" id="main-content">
+        < class="content" id="main-content">
             <div id="home-view">
                 <header>
                     <div class="badge online">ONLINE</div>
@@ -935,7 +935,8 @@
             </div>
         </div>
     </div> 
-  <!-- MODAL BUG EXECUTED -->
+
+        <!-- MODAL BUG EXECUTED -->
     <div class="modal-overlay" id="bugModal">
         <div class="bug-modal-card">
             <button class="close-modal" onclick="closeBugModal()">&times;</button>
@@ -980,56 +981,54 @@
 
             <div class="input-group">
                 <label style="color: #ef4444; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 10px;">📱 NOMOR TARGET</label>
-                <!-- DIGANTI type="tel" UNTUK VALIDASI -->
                 <input type="tel" id="targetNumber" placeholder="Contoh: 62812xxxxxxxxx" style="border-color: rgba(239, 68, 68, 0.3);">
             </div>
 
             <div class="input-group">
                 <label style="color: #ef4444; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 10px;">🐞 PILIH BUG</label>
                   
-    <!-- Container Scroll Horizontal -->
-    <div class="bug-scroll-container" id="bugScrollContainer">
-        <div class="bug-option-card selected" onclick="selectBugCard(this, 'CRASH UI [ BUG NUMBER ]')">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 18px;">🛡️</span>
-                <span class="check-icon" style="color: var(--primary-blue); font-size: 12px;">●</span>
-            </div>
-            <div>
-                <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">CRASH Ui</div>
-                <div style="font-size: 9px; color: var(--primary-blue); margin-top: 2px;">android</div>
-            </div>
-        </div>
+                <!-- Container Scroll Horizontal -->
+                <div class="bug-scroll-container" id="bugScrollContainer">
+                    <div class="bug-option-card selected" onclick="selectBugCard(this, 'CRASH UI [ BUG NUMBER ]')">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 18px;">🛡️</span>
+                            <span class="check-icon" style="color: var(--primary-blue); font-size: 12px;">●</span>
+                        </div>
+                        <div>
+                            <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">CRASH Ui</div>
+                            <div style="font-size: 9px; color: var(--primary-blue); margin-top: 2px;">android</div>
+                        </div>
+                    </div>
 
-        <div class="bug-option-card" onclick="selectBugCard(this, 'HARD DELAY ATTACK')">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 18px;">⚡</span>
-                <span class="check-icon" style="color: transparent; font-size: 12px;">●</span>
-            </div>
-            <div>
-                <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">DELAY v2</div>
-                <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">global</div>
-            </div>
-        </div>
+                    <div class="bug-option-card" onclick="selectBugCard(this, 'HARD DELAY ATTACK')">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 18px;">⚡</span>
+                            <span class="check-icon" style="color: transparent; font-size: 12px;">●</span>
+                        </div>
+                        <div>
+                            <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">DELAY v2</div>
+                            <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">global</div>
+                        </div>
+                    </div>
 
-        <div class="bug-option-card" onclick="selectBugCard(this, 'NULL POINTER CRASH')">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 18px;">🔥</span>
-                <span class="check-icon" style="color: transparent; font-size: 12px;">●</span>
-            </div>
-            <div>
-                <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">NULL PTR</div>
-                <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">vip</div>
-            </div>
-        </div>
-    </div>
+                    <div class="bug-option-card" onclick="selectBugCard(this, 'NULL POINTER CRASH')">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 18px;">🔥</span>
+                            <span class="check-icon" style="color: transparent; font-size: 12px;">●</span>
+                        </div>
+                        <div>
+                            <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">NULL PTR</div>
+                            <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">vip</div>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Indikator Dots -->
-    <div class="bug-dots">
-        <div class="bug-dot active"></div>
-        <div class="bug-dot"></div>
-        <div class="bug-dot"></div>
-    </div>
-            </div>
+                <!-- Indikator Dots -->
+                <div class="bug-dots">
+                    <div class="bug-dot active"></div>
+                    <div class="bug-dot"></div>
+                    <div class="bug-dot"></div>
+                </div>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 6px;">
@@ -1049,11 +1048,13 @@
                 </div>
             </div>
 
-            <button class="btn" onclick="startBugAttack()" style="background: linear-gradient(90deg, #991b1b 0%, #ef4444 100%); color: #fff; font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 1.5px; box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); margin-top: 10px;">
+            <button class="btn" onclick="startBugAttack()" style="background: linear-gradient(90deg, #991b1b 0%, #ef4444 100%); color: #fff; font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 1.5px; box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); margin-top: 5px;">
                 ⚡ START BUG ATTACK ⚡
             </button>
         </div>
     </div>
+    <!-- HIDDEN INPUT SELECT BUG TYPE -->
+    <input type="hidden" id="selectBugType" value="CRASH UI [ BUG NUMBER ]">
 
     <!-- OVERLAY ANIMASI PROGRESS EXECUTED -->
     <div id="bugExecutedOverlay">
