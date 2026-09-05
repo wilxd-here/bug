@@ -1143,7 +1143,10 @@
             const passIn = document.getElementById('loginPass').value.trim();
             
             if(typeof databaseAkun !== 'undefined'){
-                const foundUser = databaseAkun.find(acc => acc.username === userIn && acc.password === passIn);
+                const foundUser = databaseAkun.find(acc => 
+    acc.username.toLowerCase() === userIn.toLowerCase() && 
+    acc.password === passIn
+)
                 if (foundUser) {
                     closeLoginModal();
                     document.getElementById('home-view').style.display = 'none';
