@@ -6,7 +6,7 @@
 
 const databaseAkun = [
     { username: "wilzie", password: "123", role: "owner" },
-    { username: "Wil", password: "123", role: "admin" },
+    { username: "", password: "123", role: "admin" },
     // Kamu bisa tambah akun pembeli baru di bawah sini:
     // { username: "nama_pembeli", password: "password_nya", role: "member" },
 ];
