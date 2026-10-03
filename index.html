@@ -2,1616 +2,238 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>xaerisoft Void</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LK21 Reborn - Nonton Film Gratis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: '#facc15', // Kuning LK21
+                        darkbg: '#0f172a',
+                        cardbg: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --bg-dark: #030712;
-            --glass-bg: rgba(10, 15, 30, 0.75);
-            --glass-border: rgba(0, 212, 255, 0.2);
-            --primary-blue: #00d2ff;
-            --primary-grad: linear-gradient(90deg, #0052d4 0%, #4364f7 50%, #6fb1fc 100%);
-            --accent-glow: rgba(0, 210, 255, 0.4);
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            overflow-y: auto;
+            background-color: #0f172a;
+            color: #f8fafc;
         }
-
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            min-height: 100vh;
-            position: relative;
-            background: #030712;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .video-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            opacity: 0.35;
-            filter: brightness(0.7) contrast(1.1);
-        }
-
-        .bg-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, transparent 20%, var(--bg-dark) 90%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        #start-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(3, 7, 18, 0.95);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            backdrop-filter: blur(12px);
-            transition: opacity 0.5s ease;
-        }
-
-        .start-btn {
-            background: var(--primary-grad);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 50px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 25px var(--accent-glow);
-            animation: pulseGlow 1.5s infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: scale(1); box-shadow: 0 0 15px var(--accent-glow); }
-            100% { transform: scale(1.06); box-shadow: 0 0 30px var(--primary-blue); }
-        }
-
-        @keyframes pulseGlowRed {
-            0% { transform: scale(1); box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
-            100% { transform: scale(1.05); box-shadow: 0 0 30px rgba(239, 68, 68, 0.8); }
-        }
-
-        #intro-screen {
-            position: fixed;
-            inset: 0;
-            background: #030712;
-            z-index: 100;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            transition: opacity 0.5s ease;
-        }
-
-        .intro-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-main);
-            opacity: 0;
-            transform: translateY(20px);
-            position: absolute;
-        }
-
-        .animate-intro {
-            animation: fadeInOut 3s forwards;
-        }
-
-        #intro-1.animate-intro { animation-delay: 0.2s; }
-        #intro-2.animate-intro { animation-delay: 3.2s; color: var(--primary-blue); text-shadow: 0 0 15px var(--accent-glow); }
-        #intro-3.animate-intro { animation-delay: 6.2s; font-size: 16px; color: var(--text-muted); }
-
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(20px); }
-            20% { opacity: 1; transform: translateY(0); }
-            80% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-20px); }
-        }
-
-        .content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100%;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
         
-        .badge {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--glass-border);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 10px;
-            color: var(--text-main);
-            display: flex; align-items: center; gap: 6px;
-        }
-        .badge.online::before {
-            content: ''; display: inline-block; width: 6px; height: 6px;
-            background: var(--primary-blue); border-radius: 50%; box-shadow: 0 0 8px var(--primary-blue);
-        }
-
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 13px;
-            border-radius: 14px;
-            border: none;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            transition: transform 0.2s;
-        }
-        .btn:active { transform: scale(0.97); }
-
-        .btn-primary {
-            background: var(--primary-grad);
-            color: white;
-            box-shadow: 0 4px 20px rgba(0, 82, 212, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-outline {
-            background: rgba(10, 15, 30, 0.7);
-            backdrop-filter: blur(10px);
-            color: white;
-            border: 1px solid var(--glass-border);
-        }
-
-        .social-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .social-item {
-            flex: 1;
-            background: rgba(10, 15, 30, 0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid var(--glass-border);
-            padding: 8px 4px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            text-decoration: none;
-            transition: border-color 0.2s, transform 0.2s;
-        }
-
-        .social-icon-svg {
-            width: 18px;
-            height: 18px;
-            fill: var(--primary-blue);
-        }
-
-        .social-text {
-            font-size: 9px;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(3, 7, 18, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 200;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .login-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 400px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .input-group label {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        .input-group input {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 12px 15px;
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .input-group input:focus {
-            border-color: var(--primary-blue);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px; right: 20px;
-            background: none; border: none;
-            color: var(--text-muted);
-            font-size: 22px;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .close-modal:hover { color: #fff; }
-
-        #dashboard-view {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-            padding-bottom: 90px; 
-        }
-
-        .void-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 15px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .profile-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .profile-left { display: flex; align-items: center; gap: 14px; }
-        .profile-avatar {
-            width: 55px; height: 55px;
-            background: rgba(0, 212, 255, 0.05);
-            border: 2px solid var(--primary-blue);
-            border-radius: 14px;
-            display: flex; justify-content: center; align-items: center;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            color: var(--primary-blue);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-        .profile-info { display: flex; flex-direction: column; gap: 3px; }
-        .profile-name { font-size: 18px; font-weight: 800; color: #fff; font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
-        .profile-role { font-size: 11px; color: var(--primary-blue); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-        .profile-expired { 
-            font-size: 9px; 
-            color: #ef4444; 
-            font-weight: 700; 
-            background: rgba(239, 68, 68, 0.1); 
-            padding: 3px 6px; 
-            border-radius: 6px; 
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            width: fit-content;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-manage-row {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-        }
-        .btn-manage {
-            flex: 1;
-            cursor: pointer;
-        }
-        .btn-manage-box {
-            padding: 12px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: 0.2s;
-            height: 100%;
-        }
-        .btn-manage-box:active {
-            transform: scale(0.95);
-        }
-        .btn-manage-box span {
-            font-size: 10px;
-            font-weight: 800;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 0.5px;
-        }
-
-        /* BOTTOM NAVIGATION MENU */
-        .bottom-nav {
-            position: fixed;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 440px;
-            background: rgba(10, 15, 30, 0.85);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 10px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            z-index: 100;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            color: var(--text-muted);
-            transition: 0.3s;
-            cursor: pointer;
-            width: 20%;
-        }
-
-        .nav-item svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-            transition: 0.3s;
-        }
-
-        .nav-item span {
-            font-size: 9px;
-            font-weight: 700;
-            font-family: 'Inter', sans-serif;
-            white-space: nowrap;
-        }
-
-        .nav-item:hover, .nav-item.active { color: var(--primary-blue); }
-        .nav-item.active svg { filter: drop-shadow(0 0 8px var(--primary-blue)); }
-        .nav-item.wa-attack { color: #ef4444; }
-        .nav-item.wa-attack svg { filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6)); }
-
-        /* WIDGET JADWAL SHOLAT */
-        .sholat-scroll {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .sholat-scroll::-webkit-scrollbar { display: none; }
-        
-        .sholat-card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 12px 15px;
-            min-width: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-            transition: 0.3s;
-        }
-        .sholat-card.active {
-            border-color: #f97316;
-            background: rgba(249, 115, 22, 0.1);
-            box-shadow: 0 0 12px rgba(249, 115, 22, 0.2);
-        }
-        .sholat-card.active .sholat-name, .sholat-card.active .sholat-time {
-            color: #f97316;
-        }
-
-        .sholat-icon { font-size: 16px; }
-        .sholat-name { font-size: 9px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; }
-        .sholat-time { font-size: 13px; font-weight: 800; color: #fff; font-family: 'Orbitron', sans-serif; }
-
-        /* TOP NAVBAR CUSTOM */
-        .top-navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 15, 30, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 10px 15px;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 20px;
-        }
-
-        .nav-left, .nav-right { display: flex; align-items: center; gap: 12px; }
-
-        .hamburger-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-
-        .weather-widget {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(20, 25, 40, 0.8);
-            border: 1px solid #f97316;
-            border-radius: 16px;
-            padding: 6px 12px;
-            color: #fff;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 9px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .action-btn:active { transform: scale(0.95); }
-        .action-btn .btn-icon { color: #f97316; font-size: 11px; }
-
-        .profile-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--text-muted);
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-
-        /* -------------------------------------------
-           TAMBAHAN CSS UNTUK BUG MODAL DAN OVERLAY 
-           ------------------------------------------- */
-        
-        .bug-modal-card {
-            background: var(--glass-bg);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 400px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-        }
-
-        .bug-profile-box {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .bug-stat-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            text-align: center;
-        }
-
-        .bug-stat-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .bug-sender-grid {
-            display: flex;
-            gap: 10px;
-        }
-
-        .sender-card {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .sender-card.selected {
-            border-color: #ef4444;
-            background: rgba(239, 68, 68, 0.15);
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
-        }
-
-        #bugExecutedOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(3, 7, 18, 0.95);
-            z-index: 999;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(8px);
-        }
-
-        .title-accent {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--accent-glow);
-        }
-  /* Styling untuk Horizontal Scroll Bug Menu */
-        .bug-scroll-container {
-            display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            scroll-snap-type: x mandatory;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .bug-scroll-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .bug-option-card {
-            min-width: 140px;
-            flex: 0 0 auto;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 16px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            cursor: pointer;
-            scroll-snap-align: start;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .bug-option-card.selected {
-            border-color: var(--primary-blue);
-            background: rgba(0, 212, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-        }
-
-        .bug-dots {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .bug-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: 0.3s;
-        }
-
-        .bug-dot.active {
-            width: 16px;
-            border-radius: 4px;
-            background: var(--primary-blue);
-        }
-      /* STYLING FEED BERITA / INFO KECE */
-.info-card-container {
-    max-height: 380px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding-right: 4px;
-    -ms-overflow-style: none;
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-blue) transparent;
-}
-
-.info-card-container::-webkit-scrollbar {
-    width: 4px;
-}
-
-.info-card-container::-webkit-scrollbar-thumb {
-    background: var(--primary-blue);
-    border-radius: 4px;
-    box-shadow: 0 0 10px var(--primary-blue);
-}
-
-.news-card {
-    background: rgba(0, 0, 0, 0.45);
-    border: 1px solid var(--glass-border);
-    border-radius: 14px;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
-    backdrop-filter: blur(8px);
-    transition: all 0.3s ease;
-}
-
-.news-card:hover {
-    border-color: var(--primary-blue);
-    box-shadow: 0 0 15px var(--accent-glow);
-}
-
-.news-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.news-badge {
-    font-size: 8px;
-    font-weight: 800;
-    font-family: 'Orbitron', sans-serif;
-    padding: 3px 8px;
-    border-radius: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.news-badge.admin {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.5);
-    box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
-}
-
-.news-badge.update {
-    background: rgba(0, 212, 255, 0.2);
-    color: var(--primary-blue);
-    border: 1px solid var(--glass-border);
-}
-
-.news-badge.hot {
-    background: rgba(249, 115, 22, 0.2);
-    color: #f97316;
-    border: 1px solid rgba(249, 115, 22, 0.5);
-}
-
-.news-title {
-    font-size: 13px;
-    font-weight: 800;
-    color: #fff;
-    font-family: 'Orbitron', sans-serif;
-    line-height: 1.3;
-}
-
-.news-desc {
-    font-size: 10px;
-    color: var(--text-muted);
-    line-height: 1.5;
-}
-
-.news-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 9px;
-    color: var(--text-muted);
-    border-top: 1px dashed rgba(255, 255, 255, 0.1);
-    padding-top: 8px;
-    margin-top: 4px;
-}
-
+        .movie-card { transition: all 0.3s ease; }
+        .movie-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .movie-overlay { opacity: 0; transition: opacity 0.3s ease; }
+        .movie-card:hover .movie-overlay { opacity: 1; }
     </style>
-
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/jpeg" href="logo.jpg">
-    <link rel="apple-touch-icon" href="logo.jpg">
-    <meta name="theme-color" content="#030712">
-    <!-- HANYA UNTUK DEVELOPMENT. Autentikasi sungguhan HARUS di Backend -->
-    <script src="data/database.js"></script>
 </head>
-<body>
-    <input type="file" id="music-input" accept="audio/*" style="display: none;">
-    <input type="color" id="theme-input" style="display: none;">
-    
-    <div id="start-overlay" onclick="enterVoid()">
-        <div class="start-btn">⚡ ENTER VOID ⚡</div>
-        <p style="font-size: 10px; color: var(--text-muted); font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">KLIK DI MANA SAJA UNTUK MEMULAI</p>
-    </div>
+<body class="antialiased min-h-screen flex flex-col">
 
-    <audio id="bg-music" preload="auto">
-        <source src="music.mp3" type="audio/mp3">
-    </audio>
+    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur shadow-md border-b border-slate-800">
+        <div class="container mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-bold text-brand tracking-wider uppercase flex items-center gap-2" onclick="resetSearch(event)">
+                <i class="fas fa-video"></i> LK21<span class="text-white text-sm font-normal">Reborn</span>
+            </a>
 
-    <div id="intro-screen">
-        <div id="intro-1" class="intro-text">— Welcome —</div>
-        <div id="intro-2" class="intro-text">— xaerisoft —</div>
-        <div id="intro-3" class="intro-text">— poweredby Wil —</div>
-    </div>
-
-    <div class="app-container">
-        <video id="bg-video" class="video-bg" muted playsinline preload="auto">
-            <source src="background.mp4" type="video/mp4">
-        </video>
-        <div class="bg-overlay"></div>
-
-        <!-- PERBAIKAN: STRUKTUR PEMBUNGKUS MAIN-CONTENT AGAR JS TIDAK ERROR -->
-        <div class="content" id="main-content">
-
-            <div id="home-view">
-                <header>
-                    <div class="badge online">ONLINE</div>
-                    <div class="badge" style="font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 1px; color: var(--primary-blue); box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);">v1.0</div>
-                </header>
-
-                <div style="text-align: center; margin-top: 5px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 4px;">
-                    <div style="font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900; color: #fff; text-shadow: 0 0 15px var(--accent-glow); letter-spacing: 1px;">XAERISOFT VOID</div>
-                    <div id="home-clock" style="font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; color: var(--primary-blue); letter-spacing: 2px;">00:00:00</div>
-                </div>
-
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <img src="xaeri.jpg" alt="Banner" style="width: 150px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);">
-                </div>
-
-                <div class="btn-group">
-                    <button class="btn btn-primary" onclick="openLoginModal()">⚡ Masuk</button>
-                    <a href="https://wa.me/62895384482069?text=Halo%20min,%20saya%20mau%20ambil%20free%20akun%20trial%201%20hari" target="_blank" class="btn btn-outline">🎁 Free akun trial 1h</a>
-                    <a href="https://wa.me/62895384482069?text=Halo%20min,%20saya%20mau%20beli%20akun%20xaerisoft%20void" target="_blank" class="btn btn-outline">💬 BUY AKUN HUBUNGI ADMIN (WA)</a>
-                </div>
-
-                <div class="social-row">
-                    <a href="https://tiktok.com/@xaerisoft" target="_blank" class="social-item">
-                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64c.29 0 .56.05.82.13V9.4a6.34 6.34 0 00-.82-.05A6.33 6.33 0 003.15 15.7a6.33 6.33 0 0010.82 4.47v-7.14a8.27 8.27 0 005.62 2.13v-3.47a4.86 4.86 0 01-2-.69z"/></svg>
-                        <span class="social-text">TikTok</span>
-                    </a>
-                    
-                    <a href="https://youtube.com" target="_blank" class="social-item">
-                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M21.58 7.19c-.23-.86-.91-1.54-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.81.42c-.86.23-1.54.91-1.77 1.77C2 8.75 2 12 2 12s0 3.25.42 4.81c.23.86.91 1.54 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.81-.42c.86-.23 1.77-.91 1.77-1.77C22 15.25 22 12 22 12s0-3.25-.42-4.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
-                        <span class="social-text">YouTube</span>
-                    </a>
-                
-                    <a href="https://instagram.com/bknwil" target="_blank" class="social-item">
-                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                        <span class="social-text">Instagram</span>
-                    </a>
-                    
-                    <a href="https://t.me/@wilajaa" target="_blank" class="social-item">
-                        <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
-                        <span class="social-text">Telegram</span>
-                    </a>
-                </div>
+            <!-- Search Bar (Always Visible & Functional) -->
+            <div class="w-full sm:w-96 relative">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="w-full bg-slate-800 text-white placeholder-slate-400 rounded-full py-2 pl-10 pr-4 border border-slate-700 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all"
+                    placeholder="Cari film (mis: Spiderman, Pamali)..."
+                    autocomplete="off"
+                >
+                <i class="fas fa-search absolute left-3.5 top-3 text-slate-400"></i>
+                <!-- Clear Button -->
+                <button id="clearSearchBtn" class="absolute right-3 top-2.5 text-slate-400 hover:text-white hidden">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
+        </div>
+    </header>
 
-            <div id="dashboard-view">
-                <div class="top-navbar">
-                    <div class="nav-left">
-                        <button class="hamburger-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                        </button>
-                        <div class="weather-widget">
-                            <span id="weather-icon">🌤️</span>
-                            <span id="weather-temp">--°C</span>
-                        </div>
-                    </div>
-                    <div class="nav-right">
-                        <button class="action-btn" onclick="document.getElementById('music-input').click()">
-                            <span class="btn-icon">🎵</span><span>MUSIC</span>
-                        </button>
-                        <button class="action-btn" onclick="document.getElementById('theme-input').click()">
-                            <span class="btn-icon">🎨</span><span>THEME</span>
-                        </button>
-                        <button class="profile-btn">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        </button>
-                    </div>
-                </div>
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        
+        <!-- Hero / Banner Section -->
+        <div id="heroSection" class="relative rounded-2xl overflow-hidden bg-slate-800 mb-10 h-64 sm:h-80 md:h-[400px] w-full flex items-center group cursor-pointer" onclick="openLink()">
+            <img src="https://placehold.co/1200x500/1e293b/facc15?text=SPIDER-MAN:+NO+WAY+HOME&font=Poppins" alt="Featured" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
+            <div class="relative z-10 p-6 md:p-12 max-w-2xl">
+                <span class="bg-brand text-slate-900 text-xs font-bold px-2 py-1 rounded mb-4 inline-block">TERPOPULER</span>
+                <h1 class="text-3xl md:text-5xl font-bold mb-4 text-white">Spider-Man: No Way Home</h1>
+                <p class="text-slate-300 text-sm md:text-base mb-6 line-clamp-3">Dengan terungkapnya identitas Spider-Man, Peter meminta bantuan Doctor Strange. Namun, sebuah mantra yang salah memicu terbukanya multiverse, mendatangkan musuh-musuh dari realitas lain.</p>
+                <button class="bg-brand text-slate-900 font-bold py-2 px-6 rounded-full hover:bg-yellow-500 transition-colors flex items-center gap-2">
+                    <i class="fas fa-play"></i> Nonton Sekarang
+                </button>
+            </div>
+        </div>
 
-                <div class="void-card" style="padding: 15px; display: flex; flex-direction: column; gap: 15px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div style="width: 6px; height: 14px; background: var(--primary-blue); border-radius: 4px; box-shadow: 0 0 10px var(--primary-blue);"></div>
-                        <div class="title-accent">
-                            XAERISOFT <span style="color: var(--primary-blue);">VOID</span>
-                        </div>
-                    </div>
+        <div class="flex items-center justify-between mb-6">
+            <h2 id="sectionTitle" class="text-2xl font-bold border-l-4 border-brand pl-3">Semua Film</h2>
+            <span id="resultCount" class="text-sm text-slate-400"></span>
+        </div>
 
-                    <div style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border);">
-                        <video src="vidio.mp4" autoplay loop muted playsinline style="width: 100%; height: 140px; object-fit: cover; display: block; opacity: 0.9;"></video>
-                    </div>
+        <!-- Movie Grid -->
+        <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            <!-- Movie cards will be generated here by JavaScript -->
+        </div>
 
-                    <div class="profile-row">
-                        <div class="profile-left">
-                            <div class="profile-avatar" id="display-avatar">W</div>
-                            <div class="profile-info">
-                                <div class="profile-name" id="display-username">Wilzie</div>
-                                <div class="profile-role" id="display-role">OWNER</div>
-                                <div class="profile-expired">EXPIRED: PERMANEN</div>
+        <!-- Empty State (When Search Fails) -->
+        <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-center">
+            <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-search-minus text-4xl text-slate-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Film Tidak Ditemukan</h3>
+            <p class="text-slate-400">Coba gunakan kata kunci lain untuk mencari film.</p>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 border-t border-slate-800 py-8 mt-10">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-slate-500 text-sm mb-2">Platform streaming ini dirancang sebagai demo responsif.</p>
+            <p class="text-slate-400 font-semibold">&copy; 2026 LK21 Reborn. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Film Dummy (16 Film Campuran)
+        const moviesData = [
+            { id: 1, title: 'Siksa Neraka', year: '2023', rating: '6.5', type: 'Indo', poster: 'https://placehold.co/300x450/450a0a/ffffff?text=Siksa+Neraka' },
+            { id: 2, title: 'Pamali', year: '2022', rating: '6.0', type: 'Indo', poster: 'https://placehold.co/300x450/1c1917/ffffff?text=Pamali' },
+            { id: 3, title: 'Pemukiman Setan', year: '2024', rating: '7.1', type: 'Indo', poster: 'https://placehold.co/300x450/0f172a/ffffff?text=Pemukiman+Setan' },
+            { id: 4, title: 'Spider-Man: No Way Home', year: '2021', rating: '8.2', type: 'Barat', poster: 'https://placehold.co/300x450/7f1d1d/ffffff?text=Spider-Man' },
+            { id: 5, title: 'The Batman', year: '2022', rating: '7.8', type: 'Barat', poster: 'https://placehold.co/300x450/000000/ffffff?text=The+Batman' },
+            { id: 6, title: 'Agak Laen', year: '2024', rating: '8.5', type: 'Indo', poster: 'https://placehold.co/300x450/14532d/ffffff?text=Agak+Laen' },
+            { id: 7, title: 'Oppenheimer', year: '2023', rating: '8.4', type: 'Barat', poster: 'https://placehold.co/300x450/f59e0b/000000?text=Oppenheimer' },
+            { id: 8, title: 'Dune: Part Two', year: '2024', rating: '8.8', type: 'Barat', poster: 'https://placehold.co/300x450/b45309/ffffff?text=Dune+2' },
+            { id: 9, title: 'KKN di Desa Penari', year: '2022', rating: '6.2', type: 'Indo', poster: 'https://placehold.co/300x450/064e3b/ffffff?text=KKN+Desa+Penari' },
+            { id: 10, title: 'Mencuri Raden Saleh', year: '2022', rating: '7.5', type: 'Indo', poster: 'https://placehold.co/300x450/1e3a8a/ffffff?text=Mencuri+Raden+Saleh' },
+            { id: 11, title: 'John Wick: Chapter 4', year: '2023', rating: '7.7', type: 'Barat', poster: 'https://placehold.co/300x450/0f172a/facc15?text=John+Wick+4' },
+            { id: 12, title: 'Avatar: The Way of Water', year: '2022', rating: '7.6', type: 'Barat', poster: 'https://placehold.co/300x450/0c4a6e/ffffff?text=Avatar+2' },
+            { id: 13, title: 'Barbie', year: '2023', rating: '6.9', type: 'Barat', poster: 'https://placehold.co/300x450/be185d/ffffff?text=Barbie' },
+            { id: 14, title: 'Vina: Sebelum 7 Hari', year: '2024', rating: '7.0', type: 'Indo', poster: 'https://placehold.co/300x450/000000/dc2626?text=Vina' },
+            { id: 15, title: 'Badarawuhi di Desa Penari', year: '2024', rating: '6.8', type: 'Indo', poster: 'https://placehold.co/300x450/022c22/ffffff?text=Badarawuhi' },
+            { id: 16, title: 'Pengabdi Setan 2', year: '2022', rating: '7.3', type: 'Indo', poster: 'https://placehold.co/300x450/1a1010/ffffff?text=Pengabdi+Setan+2' }
+        ];
+
+        const targetUrl = 'https://americaenmipiel.org';
+        const movieGrid = document.getElementById('movieGrid');
+        const emptyState = document.getElementById('emptyState');
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        const heroSection = document.getElementById('heroSection');
+        const sectionTitle = document.getElementById('sectionTitle');
+        const resultCount = document.getElementById('resultCount');
+
+        function openLink() {
+            window.open(targetUrl, '_blank');
+        }
+
+        function createCard(movie) {
+            return `
+                <div class="movie-card bg-cardbg rounded-xl overflow-hidden cursor-pointer relative group" onclick="openLink()">
+                    <!-- Quality Badge -->
+                    <div class="absolute top-2 right-2 bg-brand text-slate-900 text-[10px] font-bold px-1.5 py-0.5 rounded z-10 shadow">
+                        HD
+                    </div>
+                    
+                    <!-- Poster -->
+                    <div class="relative aspect-[2/3] w-full overflow-hidden">
+                        <img src="${movie.poster}" alt="${movie.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        
+                        <!-- Hover Overlay with Play Button -->
+                        <div class="movie-overlay absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex items-center justify-center">
+                            <div class="w-12 h-12 bg-brand rounded-full flex items-center justify-center text-slate-900 shadow-lg shadow-brand/30 transform group-hover:scale-110 transition-transform">
+                                <i class="fas fa-play ml-1"></i>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="void-card" id="calendar-widget" style="padding: 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="font-size: 26px; text-shadow: 0 0 10px var(--accent-glow);">📅</div>
-                        <div style="display: flex; flex-direction: column; gap: 2px;">
-                            <div id="calendar-date" style="font-size: 14px; font-weight: 800; color: #fff; font-family: 'Orbitron', sans-serif;">-- --- ----</div>
-                            <div id="calendar-day" style="font-size: 9px; color: var(--primary-blue); font-family: 'Orbitron', sans-serif; letter-spacing: 1px;">----</div>
-                        </div>
-                    </div>
-                    <div id="calendar-clock" style="font-size: 13px; font-weight: 800; color: var(--text-main); font-family: 'Orbitron', sans-serif; background: rgba(0, 212, 255, 0.1); padding: 6px 10px; border-radius: 8px; border: 1px solid var(--primary-blue); box-shadow: 0 0 10px var(--accent-glow);">00:00:00</div>
-                </div>
-                
-                <div class="void-card" style="padding: 15px; display: flex; flex-direction: column; gap: 15px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div style="display: flex; align-items: center; gap: 8px; font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 800; color: #fff; letter-spacing: 1px;">
-                            🕌 JADWAL SHOLAT
-                        </div>
-                        <div style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 20px; padding: 5px 10px; font-size: 9px; font-family: 'Orbitron', sans-serif; color: var(--text-muted); display: flex; align-items: center; gap: 5px;">
-                            ⏱ MENUJU <span id="next-prayer-name">...</span> : <span id="next-prayer-countdown" style="color: #fff;">00:00:00</span>
-                        </div>
-                    </div>
-
-                    <div class="sholat-scroll">
-                        <div class="sholat-card" id="card-Fajr">
-                            <span class="sholat-icon">🌙</span><span class="sholat-name">Subuh</span><span class="sholat-time" id="time-Fajr">--:--</span>
-                        </div>
-                        <div class="sholat-card" id="card-Dhuhr">
-                            <span class="sholat-icon">☀️</span><span class="sholat-name">Dzuhur</span><span class="sholat-time" id="time-Dhuhr">--:--</span>
-                        </div>
-                        <div class="sholat-card" id="card-Asr">
-                            <span class="sholat-icon">☁️</span><span class="sholat-name">Ashar</span><span class="sholat-time" id="time-Asr">--:--</span>
-                        </div>
-                        <div class="sholat-card" id="card-Maghrib">
-                            <span class="sholat-icon">🌆</span><span class="sholat-name">Maghrib</span><span class="sholat-time" id="time-Maghrib">--:--</span>
-                        </div>
-                        <div class="sholat-card" id="card-Isha">
-                            <span class="sholat-icon">🌌</span><span class="sholat-name">Isya</span><span class="sholat-time" id="time-Isha">--:--</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="btn-manage-row">
-                    <div class="btn-manage" onclick="openSenderModal();">
-                        <div class="void-card btn-manage-box" style="border-color: rgba(0, 212, 255, 0.4); background: rgba(0, 212, 255, 0.1); box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);">
-                            <span style="font-size: 14px;">📱</span>
-                            <span style="color: #00d2ff;">MANAGE SENDER</span>
-                        </div>
-                    </div>
                     
-                    <div class="btn-manage" onclick="openBugModal();">
-                        <div class="void-card btn-manage-box" style="border-color: rgba(239, 68, 68, 0.6); background: rgba(20, 5, 5, 0.8); box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#ef4444" style="filter: drop-shadow(0 0 8px #ef4444);">
-                                <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm-1.5 8c-.83 0-1.5-.67-1.5-1.5S9.67 7 10.5 7s1.5.67 1.5 1.5S11.33 10 10.5 10zm3 0c-.83 0-1.5-.67-1.5-1.5S12.67 7 13.5 7s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-                            </svg>
-                            <span style="color: #ef4444; font-weight: 900; text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);">BUG EXECUTED</span>
+                    <!-- Card Info -->
+                    <div class="p-3">
+                        <h3 class="font-semibold text-sm truncate text-white mb-1" title="${movie.title}">${movie.title}</h3>
+                        <div class="flex justify-between items-center text-xs text-slate-400">
+                            <span>${movie.year}</span>
+                            <span class="flex items-center gap-1 text-brand">
+                                <i class="fas fa-star text-[10px]"></i> ${movie.rating}
+                            </span>
                         </div>
                     </div>
                 </div>
-
-                <div style="flex-grow: 1; min-height: 20px;"></div>
-                <button class="btn btn-outline" style="border-color: #ef4444; color: #ef4444;" onclick="logout()">LOGOUT</button>
-                
-                <div class="bottom-nav">
-                    <div class="nav-item active">
-                        <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"/></svg>
-                        <span>Home</span>
-                    </div>
-                    
-                    <div class="nav-item wa-attack" onclick="openBugModal();">
-                        <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91 0-5.46-4.45-9.91-9.91-9.91zM17.47 15.65c-.24.68-1.38 1.25-1.95 1.33-.53.08-1.2.22-3.48-.73-2.75-1.14-4.52-3.95-4.66-4.13-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2.02.94-2.28.24-.26.53-.33.71-.33.18 0 .36 0 .52.01.19.01.44-.07.67.51.24.59.81 1.98.88 2.12.07.13.12.29.03.47-.09.18-.13.29-.26.44-.13.15-.27.33-.38.44-.12.12-.25.26-.11.51.14.25.63 1.05 1.35 1.7.93.84 1.71 1.1 1.95 1.22.24.12.38.1.53-.08.14-.18.63-.73.8-1.02.17-.29.34-.24.57-.15.23.09 1.48.7 1.73.82.25.12.42.18.48.28.06.11.06.61-.18 1.29z"/></svg>
-                        <span>WA Attack</span>
-                    </div>
-
-                    <div class="nav-item" onclick="openInfoModal();">
-    <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-    <span>Info</span>
-</div>
-
-                    
-                    <div class="nav-item">
-                        <svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.5 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
-                        <span>Tools</span>
-                    </div>
-                    
-                    <div class="nav-item">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.43.86 4.65 2.3 6.36.4.47 1.05.64 1.63.43L8 18l1.5 1.5L12 18l2.5 1.5L16 18l2.07.79c.58.21 1.23.04 1.63-.43C21.14 16.65 22 14.43 22 12c0-5.52-4.48-10-10-10zm-3 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-1.5 4h-3v-2h3v2z"/></svg>
-                        <span>Rat</span>
-                    </div>
-                </div>
-            </div> 
-
-        <!-- PERBAIKAN: DUA TAG PENUTUP UNTUK MEMBUNGKUS MAIN-CONTENT DAN APP-CONTAINER -->
-        </div> 
-    </div> 
-                          
-    <div class="modal-overlay" id="loginModal">
-        <div class="login-card">
-            <button class="close-modal" onclick="closeLoginModal()">&times;</button>
-            <h3>Autentikasi Akun</h3>
-            <div class="input-group">
-                <label>Username</label>
-                <input type="text" id="loginUser" placeholder="Masukkan username">
-            </div>
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" id="loginPass" placeholder="Masukkan password">
-            </div>
-            <button class="btn btn-primary" onclick="handleLogin()" style="margin-top: 5px;">Masuk Sekarang</button>
-        </div>
-    </div>
-  <!-- MODAL MANAGE SENDER -->
-    <div class="modal-overlay" id="senderModal">
-        <div class="login-card">
-            <button class="close-modal" onclick="closeSenderModal()">&times;</button>
-            <h3 style="font-family: 'Orbitron', sans-serif; font-size: 14px; text-align: center; color: var(--primary-blue);">MANAGE SENDER</h3>
-            <div class="input-group">
-                <label>Nomor WhatsApp Sender</label>
-                <input type="tel" id="senderPhone" placeholder="628xxxxxxxxxx">
-            </div>
-            <button class="btn btn-primary" onclick="requestPairingCode()">Dapatkan Kode Pairing</button>
-            
-            <div id="pairingResult" style="display: none; flex-direction: column; align-items: center; gap: 8px; margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 12px;">
-                <span style="font-size: 10px; color: var(--text-muted); font-family: 'Orbitron', sans-serif;">KODE PAIRING:</span>
-                <span id="pairingCodeDisplay" style="font-size: 18px; font-weight: 900; color: var(--primary-blue); font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">- - - -</span>
-            </div>
-        </div>
-    </div> 
-
-    <!-- MODAL BUG EXECUTED -->
-    <div class="modal-overlay" id="bugModal">
-        <div class="bug-modal-card">
-            <button class="close-modal" onclick="closeBugModal()">&times;</button>
-            
-            <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#ef4444"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.43.86 4.65 2.3 6.36.4.47 1.05.64 1.63.43L8 18l1.5 1.5L12 18l2.5 1.5L16 18l2.07.79c.58.21 1.23.04 1.63-.43C21.14 16.65 22 14.43 22 12c0-5.52-4.48-10-10-10zm-3 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-1.5 4h-3v-2h3v2z"/></svg>
-                <h3 style="font-family: 'Orbitron', sans-serif; font-size: 16px; color: #ef4444; letter-spacing: 2px;">BUG EXECUTED</h3>
-            </div>
-
-            <!-- PROFIL USER -->
-            <div class="bug-profile-box">
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 42px; height: 42px; background: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="#ef4444"><path d="M12 2c-4.42 0-8 3.58-8 8 0 2.82 1.46 5.3 3.68 6.72L7.2 18H9v2h2v-2h2v2h2v-2h1.8l-.48-1.28C18.54 15.3 20 12.82 20 10c0-4.42-3.58-8-8-8zm-3.5 9.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm7 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                        </div>
-                        <div>
-                            <div id="bug-display-username" style="font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 16px; color: #fff;">USER</div>
-                            <div id="bug-display-role" style="font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 11px; color: #ef4444;">ROLE</div>
-                        </div>
-                    </div>
-                    <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239,68,68,0.4); padding: 4px 8px; border-radius: 8px; font-size: 9px; color: #ef4444; font-family: 'Orbitron', sans-serif;">
-                        EXP: PERMANEN
-                    </div>
-                </div>
-
-                <div class="bug-stat-grid">
-                    <div class="bug-stat-item">
-                        <div style="font-size: 14px; font-weight: 900; color: #00d2ff; font-family: 'Orbitron', sans-serif;">8</div>
-                        <div style="font-size: 8px; color: var(--text-muted); font-weight: 700;">Total Bugs</div>
-                    </div>
-                    <div class="bug-stat-item">
-                        <div style="font-size: 12px; font-weight: 900; color: #22c55e; font-family: 'Orbitron', sans-serif;">GACOR</div>
-                        <div style="font-size: 8px; color: var(--text-muted); font-weight: 700;">Success Rate</div>
-                    </div>
-                    <div class="bug-stat-item">
-                        <div style="font-size: 12px; font-weight: 900; color: #22c55e; font-family: 'Orbitron', sans-serif;">ACTIVE</div>
-                        <div style="font-size: 8px; color: var(--text-muted); font-weight: 700;">Status</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label style="color: #ef4444; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 10px;">📱 NOMOR TARGET</label>
-                <input type="tel" id="targetNumber" placeholder="Contoh: 62812xxxxxxxxx" style="border-color: rgba(239, 68, 68, 0.3);">
-            </div>
-
-            <div class="input-group">
-                <label style="color: #ef4444; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 10px;">🐞 PILIH BUG</label>
-                  
-                <!-- Container Scroll Horizontal -->
-                <div class="bug-scroll-container" id="bugScrollContainer">
-                    <div class="bug-option-card selected" onclick="selectBugCard(this, 'CRASH UI [ BUG NUMBER ]')">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 18px;">🛡️</span>
-                            <span class="check-icon" style="color: var(--primary-blue); font-size: 12px;">●</span>
-                        </div>
-                        <div>
-                            <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">CRASH Ui</div>
-                            <div style="font-size: 9px; color: var(--primary-blue); margin-top: 2px;">android</div>
-                        </div>
-                    </div>
-
-                    <div class="bug-option-card" onclick="selectBugCard(this, 'HARD DELAY ATTACK')">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 18px;">⚡</span>
-                            <span class="check-icon" style="color: transparent; font-size: 12px;">●</span>
-                        </div>
-                        <div>
-                            <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">DELAY v2</div>
-                            <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">global</div>
-                        </div>
-                    </div>
-
-                    <div class="bug-option-card" onclick="selectBugCard(this, 'NULL POINTER CRASH')">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 18px;">🔥</span>
-                            <span class="check-icon" style="color: transparent; font-size: 12px;">●</span>
-                        </div>
-                        <div>
-                            <div style="font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; color: #fff;">NULL PTR</div>
-                            <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">vip</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Indikator Dots -->
-                <div class="bug-dots">
-                    <div class="bug-dot active"></div>
-                    <div class="bug-dot"></div>
-                    <div class="bug-dot"></div>
-                </div>
-            </div>
-
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <label style="color: #ef4444; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 10px;">🔀 PILIH SENDER</label>
-                    <span style="font-size: 9px; color: #00d2ff; background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); padding: 2px 8px; border-radius: 10px;">● 1 Sender Online</span>
-                </div>
-                <div class="bug-sender-grid">
-                    <div class="sender-card selected" id="senderPrivat" onclick="selectSenderType('privat')">
-                        <span style="font-size: 18px;">👤</span>
-                        <span style="font-size: 10px; font-weight: 800; color: #fff; font-family: 'Orbitron', sans-serif;">SENDER PRIVAT</span>
-                    </div>
-                    <div class="sender-card" id="senderGlobal" onclick="selectSenderType('global')">
-                        <span style="font-size: 18px;">🌐</span>
-                        <span style="font-size: 10px; font-weight: 800; color: #fff; font-family: 'Orbitron', sans-serif;">GLOBAL SENDER</span>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn" onclick="startBugAttack()" style="background: linear-gradient(90deg, #991b1b 0%, #ef4444 100%); color: #fff; font-family: 'Orbitron', sans-serif; font-weight: 900; letter-spacing: 1.5px; box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); margin-top: 5px;">
-                ⚡ START BUG ATTACK ⚡
-            </button>
-        </div>
-    </div>
-    
-    <!-- HIDDEN INPUT SELECT BUG TYPE -->
-    <input type="hidden" id="selectBugType" value="CRASH UI [ BUG NUMBER ]">
-
-    <!-- OVERLAY ANIMASI PROGRESS EXECUTED -->
-    <div id="bugExecutedOverlay">
-        <div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 15px;">
-            <div style="animation: pulseGlowRed 1s infinite alternate; width: 90px; height: 90px; border-radius: 50%; background: rgba(239, 68, 68, 0.2); border: 2px solid #ef4444; display: flex; justify-content: center; align-items: center;">
-                <svg width="50" height="50" viewBox="0 0 24 24" fill="#ef4444"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.43.86 4.65 2.3 6.36.4.47 1.05.64 1.63.43L8 18l1.5 1.5L12 18l2.5 1.5L16 18l2.07.79c.58.21 1.23.04 1.63-.43C21.14 16.65 22 14.43 22 12c0-5.52-4.48-10-10-10zm-3 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-1.5 4h-3v-2h3v2z"/></svg>
-            </div>
-            <div id="bugAnimTitle" style="font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900; color: #ef4444; letter-spacing: 2px;">EXECUTING BUG...</div>
-            <div id="bugAnimDetail" style="font-size: 11px; color: #94a3b8; font-family: 'Orbitron', sans-serif;">SENDING PAYLOAD TO TARGET</div>
-            <div style="width: 220px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin-top: 10px;">
-                <div id="bugProgressBar" style="width: 0%; height: 100%; background: #ef4444; transition: width 0.1s linear;"></div>
-            </div>
-        </div>
-    </div>
-<!-- MODAL INFO & BERITA (VOID NEWS) -->
-<div class="modal-overlay" id="infoModal">
-    <div class="login-card" style="max-width: 420px; padding: 20px;">
-        <button class="close-modal" onclick="closeInfoModal()">&times;</button>
-        
-        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 2px;">
-            <span style="font-size: 18px;">📢</span>
-            <h3 style="font-family: 'Orbitron', sans-serif; font-size: 15px; color: #fff; letter-spacing: 1.5px;">
-                VOID <span style="color: var(--primary-blue);">NEWS</span> & INFO
-            </h3>
-        </div>
-        <p style="text-align: center; font-size: 9px; color: var(--text-muted); font-family: 'Orbitron', sans-serif; margin-bottom: 15px; letter-spacing: 0.5px;">
-            BERITA HARIAN & PENGUMUMAN RESMI WILZIE
-        </p>
-
-        <!-- CONTAINER FEED BERITA -->
-        <div class="info-card-container">
-
-            <!-- NEWS ITEM 1: PESAN DARI WILZIE -->
-            <div class="news-card" style="border-color: rgba(0, 212, 255, 0.5); background: rgba(0, 212, 255, 0.05);">
-                <div class="news-header">
-                    <div style="display: flex; align-items: center; gap: 6px;">
-                        <div style="width: 20px; height: 20px; background: var(--primary-blue); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 10px; font-family: 'Orbitron', sans-serif; box-shadow: 0 0 8px var(--primary-blue);">W</div>
-                        <span style="font-size: 10px; font-weight: 800; color: #fff; font-family: 'Orbitron', sans-serif;">WILZIE (OWNER)</span>
-                    </div>
-                    <span class="news-badge admin">🔥 BROADCAST</span>
-                </div>
-                <div class="news-title">Sistem Xaerisoft Void v1.0 Aktif!</div>
-                <div class="news-desc">
-                    Halo bro! Fitur Bug Executed dan Manage Sender sudah aktif 100%. Buat lu yang mau order akun VIP atau ambil trial, langsung chat admin via WhatsApp di menu utama.
-                </div>
-                <div class="news-footer">
-                    <span>📅 Hari Ini, 12:00 WIB</span>
-                    <span style="color: var(--primary-blue); font-family: 'Orbitron', sans-serif; font-weight: 800;">VERIFIED ADMIN</span>
-                </div>
-            </div>
-
-            <!-- NEWS ITEM 2: TIPS ANTI BAN / DELAY -->
-            <div class="news-card">
-                <div class="news-header">
-                    <span style="font-size: 9px; color: var(--text-muted); font-family: 'Orbitron', sans-serif;">BERITA HARIAN</span>
-                    <span class="news-badge hot">⚡ TIPS & TRICK</span>
-                </div>
-                <div class="news-title">Cara Penggunaan Sender Agar Tidak Delay</div>
-                <div class="news-desc">
-                    Pastikan nomor WhatsApp sender lu terhubung dengan stabil lewat fitur Manage Sender. Setelah memasukkan kode pairing, tunggu 1-2 menit sebelum melancarkan eksekusi payload.
-                </div>
-                <div class="news-footer">
-                    <span>📅 Kemarin</span>
-                    <span style="color: #f97316;">XAERI ENGINE</span>
-                </div>
-            </div>
-
-            <!-- NEWS ITEM 3: UPDATE FITUR BUG -->
-            <div class="news-card">
-                <div class="news-header">
-                    <span style="font-size: 9px; color: var(--text-muted); font-family: 'Orbitron', sans-serif;">UPDATE SISTEM</span>
-                    <span class="news-badge update">🛠️ REVISION</span>
-                </div>
-                <div class="news-title">Payload CRASH UI & NULL PTR Ditingkatkan</div>
-                <div class="news-desc">
-                    Kecepatan dan efisiensi pengiriman payload dinaikkan hingga 98.7%. Penambahan protokol keamanan otomatis untuk mencegah pemicuan spam filter WA.
-                </div>
-                <div class="news-footer">
-                    <span>📅 3 Hari Lalu</span>
-                    <span>System Update</span>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-    <script>
-        const bgVideo = document.getElementById('bg-video');
-        const bgMusic = document.getElementById('bg-music');
-
-        bgVideo.addEventListener('ended', () => {
-            bgVideo.currentTime = 0;
-            bgMusic.currentTime = 0;
-            bgVideo.play();
-            bgMusic.play();
-        });
-
-        function enterVoid() {
-            const overlay = document.getElementById('start-overlay');
-            const intro = document.getElementById('intro-screen');
-
-            if (bgMusic) bgMusic.play().catch(e => console.log(e));
-            if (bgVideo) bgVideo.play().catch(e => console.log(e));
-
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                intro.style.display = 'flex';
-                document.getElementById('intro-1').classList.add('animate-intro');
-                document.getElementById('intro-2').classList.add('animate-intro');
-                document.getElementById('intro-3').classList.add('animate-intro');
-
-                setTimeout(() => {
-                    intro.style.opacity = '0';
-                    setTimeout(() => {
-                        intro.style.display = 'none';
-                        document.getElementById('main-content').style.opacity = '1';
-                    }, 500);
-                }, 9000);
-            }, 500);
+            `;
         }
 
-        function updateCalendar() {
-            const now = new Date();
-            const days = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
-            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES'];
+        function renderMovies(moviesArray) {
+            movieGrid.innerHTML = '';
             
-            const dayName = days[now.getDay()];
-            const dateNum = String(now.getDate()).padStart(2, '0');
-            const monthName = months[now.getMonth()];
-            const year = now.getFullYear();
-
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            const timeString = `${hours}:${minutes}:${seconds}`;
-
-            const dateEl = document.getElementById('calendar-date');
-            const dayEl = document.getElementById('calendar-day');
-            const clockEl = document.getElementById('calendar-clock');
-            const homeClockEl = document.getElementById('home-clock');
-
-            if (dateEl) dateEl.textContent = `${dateNum} ${monthName} ${year}`;
-            if (dayEl) dayEl.textContent = dayName;
-            if (clockEl) clockEl.textContent = timeString;
-            if (homeClockEl) homeClockEl.textContent = timeString;
-        }
-        setInterval(updateCalendar, 1000);
-        updateCalendar();
-
-        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
-        function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
-
-        function handleLogin() {
-            const userIn = document.getElementById('loginUser').value.trim();
-            const passIn = document.getElementById('loginPass').value.trim();
-            
-            if(typeof databaseAkun !== 'undefined'){
-                const foundUser = databaseAkun.find(acc => 
-    acc.username.toLowerCase() === userIn.toLowerCase() && 
-    acc.password === passIn
-)
-                if (foundUser) {
-                    closeLoginModal();
-                    document.getElementById('home-view').style.display = 'none';
-                    document.getElementById('dashboard-view').style.display = 'flex';
-                    
-                    document.getElementById('display-username').textContent = foundUser.username;
-                    document.getElementById('bug-display-username').textContent = foundUser.username;
-                    
-                    document.getElementById('display-avatar').textContent = foundUser.username.charAt(0).toUpperCase();
-                    
-                    document.getElementById('display-role').textContent = foundUser.role;
-                    document.getElementById('bug-display-role').textContent = foundUser.role;
-                } else {
-                    alert("Username atau Password salah!");
-                }
+            if (moviesArray.length === 0) {
+                movieGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                resultCount.textContent = "0 hasil";
             } else {
-                alert("Database tidak terhubung (Development Mode).");
-            }
-        }
-
-        function logout() {
-            document.getElementById('home-view').style.display = 'block';
-            document.getElementById('dashboard-view').style.display = 'none';
-            document.getElementById('loginUser').value = '';
-            document.getElementById('loginPass').value = '';
-        }
-
-        async function fetchPrayerTimes() {
-            try {
-                const url = 'https://api.aladhan.com/v1/timingsByCity?city=Depok&country=Indonesia&method=11';
-                const response = await fetch(url);
-                if(!response.ok) throw new Error("Gagal mengambil api sholat");
-                const data = await response.json();
-                const timings = data.data.timings;
+                movieGrid.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+                resultCount.textContent = `${moviesArray.length} film`;
                 
-                const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-                const prayerNamesIndo = { 'Fajr': 'SUBUH', 'Dhuhr': 'DZUHUR', 'Asr': 'ASHAR', 'Maghrib': 'MAGHRIB', 'Isha': 'ISYA' };
-                
-                prayers.forEach(p => {
-                    document.getElementById(`time-${p}`).textContent = timings[p];
+                moviesArray.forEach(movie => {
+                    movieGrid.innerHTML += createCard(movie);
                 });
-
-                function updatePrayerCountdown() {
-                    const now = new Date();
-                    let nextPrayer = null;
-                    let nextPrayerTimeObj = null;
-
-                    for (let p of prayers) {
-                        const [hours, minutes] = timings[p].split(':');
-                        const pTime = new Date();
-                        pTime.setHours(hours, minutes, 0, 0);
-
-                        if (now < pTime) {
-                            nextPrayer = p;
-                            nextPrayerTimeObj = pTime;
-                            break;
-                        }
-                    }
-
-                    if (!nextPrayer) {
-                        nextPrayer = 'Fajr';
-                        const [hours, minutes] = timings['Fajr'].split(':');
-                        nextPrayerTimeObj = new Date();
-                        nextPrayerTimeObj.setDate(nextPrayerTimeObj.getDate() + 1); 
-                        nextPrayerTimeObj.setHours(hours, minutes, 0, 0);
-                    }
-
-                    const diff = nextPrayerTimeObj - now;
-                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-                    document.getElementById('next-prayer-name').textContent = prayerNamesIndo[nextPrayer];
-                    document.getElementById('next-prayer-countdown').textContent = 
-                        `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-
-                    prayers.forEach(p => document.getElementById(`card-${p}`).classList.remove('active'));
-                    document.getElementById(`card-${nextPrayer}`).classList.add('active');
-                }
-
-                setInterval(updatePrayerCountdown, 1000);
-                updatePrayerCountdown();
-                
-            } catch (error) {
-                console.error("Gagal mengambil jadwal sholat:", error);
-                document.getElementById('next-prayer-name').textContent = "ERROR API";
             }
         }
-        fetchPrayerTimes();
 
-        document.getElementById('music-input').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const audioURL = URL.createObjectURL(file);
-                const bgMusic = document.getElementById('bg-music');
-                bgMusic.src = audioURL;
-                bgMusic.play().catch(e => console.log("Gagal memutar musik:", e));
+        function handleSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            
+            // Toggle clear button
+            if (query.length > 0) {
+                clearSearchBtn.classList.remove('hidden');
+                heroSection.classList.add('hidden'); // Sembunyikan banner saat mencari
+                sectionTitle.textContent = `Hasil Pencarian: "${query}"`;
+            } else {
+                clearSearchBtn.classList.add('hidden');
+                heroSection.classList.remove('hidden'); // Munculkan kembali banner
+                sectionTitle.textContent = "Semua Film";
             }
+
+            // Filter array
+            const filteredMovies = moviesData.filter(movie => 
+                movie.title.toLowerCase().includes(query)
+            );
+            
+            renderMovies(filteredMovies);
+        }
+
+        function resetSearch(e) {
+            if(e) e.preventDefault(); // Prevent default link behavior if triggered by logo
+            searchInput.value = '';
+            handleSearch();
+        }
+
+        // Event Listeners
+        searchInput.addEventListener('input', handleSearch);
+        clearSearchBtn.addEventListener('click', resetSearch);
+
+        // Initial Render
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMovies(moviesData);
         });
 
-     document.getElementById('theme-input').addEventListener('input', function(event) {
-            const color = event.target.value;
-            const r = parseInt(color.substring(1,3), 16);
-            const g = parseInt(color.substring(3,5), 16);
-            const b = parseInt(color.substring(5,7), 16);
-            
-            const root = document.documentElement;
-            root.style.setProperty('--primary-blue', color);
-            root.style.setProperty('--primary-grad', color); 
-            root.style.setProperty('--glass-border', `rgba(${r}, ${g}, ${b}, 0.2)`);
-            root.style.setProperty('--accent-glow', `rgba(${r}, ${g}, ${b}, 0.4)`);
-        });
-
-        async function fetchWeather() {
-            const defaultLat = -6.4025; 
-            const defaultLon = 106.7942;
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => getWeatherData(position.coords.latitude, position.coords.longitude),
-                    (error) => {
-                        console.warn("Izin lokasi ditolak. Menggunakan lokasi default.");
-                        getWeatherData(defaultLat, defaultLon);
-                    }
-                );
-            } else {
-                getWeatherData(defaultLat, defaultLon);
-            }
-        }
-
-        async function getWeatherData(latitude, longitude) {
-            try {
-                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
-                if(!response.ok) throw new Error("Gagal load API");
-                const data = await response.json();
-                
-                const temp = Math.round(data.current_weather.temperature);
-                const code = data.current_weather.weathercode;
-                const isDay = data.current_weather.is_day;
-
-                let icon = '🌤️';
-                if (code === 0) icon = isDay ? '☀️' : '🌙';
-                else if ([1, 2, 3].includes(code)) icon = isDay ? '⛅' : '☁️🌙';
-                else if ([45, 48].includes(code)) icon = '🌫️';
-                else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) icon = '🌧️';
-                else if ([95, 96, 99].includes(code)) icon = '⛈️';
-
-                const iconEl = document.getElementById('weather-icon');
-                const tempEl = document.getElementById('weather-temp');
-                if (iconEl) iconEl.textContent = icon;
-                if (tempEl) tempEl.textContent = `${temp}°C`;
-            } catch (error) {
-                console.error("Gagal mengambil data cuaca:", error);
-                document.getElementById('weather-temp').textContent = "--°C";
-            }
-        }
-        fetchWeather();
-
-        function openSenderModal() { document.getElementById('senderModal').style.display = 'flex'; }
-        
-        function closeSenderModal() {
-            document.getElementById('senderModal').style.display = 'none';
-            document.getElementById('pairingResult').style.display = 'none';
-            document.getElementById('senderPhone').value = '';
-        }
-
-        function requestPairingCode() {
-            let phoneInput = document.getElementById('senderPhone').value.trim();
-            if (!/^\+?[0-9]{10,15}$/.test(phoneInput)) {
-                alert("Masukkan nomor WhatsApp yang valid! (Contoh: 628123456789)");
-                return;
-            }
-
-            const pairingDisplay = document.getElementById('pairingResult');
-            const codeContainer = document.getElementById('pairingCodeDisplay');
-            
-            codeContainer.textContent = "MEMPROSES...";
-            pairingDisplay.style.display = 'flex';
-
-            setTimeout(() => {
-                const charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                let code1 = '', code2 = '';
-                for (let i = 0; i < 4; i++) {
-                    code1 += charSet.charAt(Math.floor(Math.random() * charSet.length));
-                    code2 += charSet.charAt(Math.floor(Math.random() * charSet.length));
-                }
-                codeContainer.textContent = `${code1}-${code2}`;
-            }, 1000);
-        }
-
-        let selectedSender = 'privat';
-
-        function openBugModal() { document.getElementById('bugModal').style.display = 'flex'; }
-        function closeBugModal() { 
-            document.getElementById('bugModal').style.display = 'none'; 
-            document.getElementById('targetNumber').value = '';
-        }
-
-        function selectSenderType(type) {
-            selectedSender = type;
-            const privatCard = document.getElementById('senderPrivat');
-            const globalCard = document.getElementById('senderGlobal');
-            
-            if (type === 'privat') {
-                privatCard.classList.add('selected');
-                globalCard.classList.remove('selected');
-            } else {
-                globalCard.classList.add('selected');
-                privatCard.classList.remove('selected');
-            }
-        }
-
-        function startBugAttack() {
-            const target = document.getElementById('targetNumber').value.trim();
-            if (!/^\+?[0-9]{10,15}$/.test(target)) {
-                alert("Harap masukkan nomor target yang valid! (Contoh: 628123456789)");
-                return;
-            }
-
-            const overlay = document.getElementById('bugExecutedOverlay');
-            const title = document.getElementById('bugAnimTitle');
-            const detail = document.getElementById('bugAnimDetail');
-            const progressBar = document.getElementById('bugProgressBar');
-
-            title.textContent = "EXECUTING BUG...";
-            title.style.color = "#ef4444";
-            detail.textContent = `TARGET: ${target} | SENDER: ${selectedSender.toUpperCase()}`;
-            progressBar.style.width = "0%";
-            overlay.style.display = "flex";
-
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 5;
-                progressBar.style.width = progress + "%";
-
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    title.textContent = "BUG EXECUTED CONFIRMED! ⚡";
-                    title.style.color = "#22c55e";
-                    detail.textContent = `PAYLOAD SUCCESSFULLY SENT TO ${target}`;
-
-                    setTimeout(() => {
-                        overlay.style.display = "none";
-                        closeBugModal();
-                    }, 2000);
-                }
-            }, 100);
-        }
-      
-        let selectedBugValue = 'CRASH UI [ BUG NUMBER ]';
-
-        function selectBugCard(element, bugValue) {
-            selectedBugValue = bugValue;
-            document.getElementById('selectBugType').value = bugValue;
-
-            document.querySelectorAll('.bug-option-card').forEach(card => {
-                card.classList.remove('selected');
-                card.querySelector('.check-icon').style.color = 'transparent';
-                card.querySelector('div:nth-child(2) div:nth-child(2)').style.color = 'var(--text-muted)';
-            });
-
-            element.classList.add('selected');
-            element.querySelector('.check-icon').style.color = 'var(--primary-blue)';
-            element.querySelector('div:nth-child(2) div:nth-child(2)').style.color = 'var(--primary-blue)';
-        }
-
-                const bugContainer = document.getElementById('bugScrollContainer');
-        if (bugContainer) {
-            bugContainer.addEventListener('scroll', () => {
-                const cards = bugContainer.querySelectorAll('.bug-option-card');
-                const dots = document.querySelectorAll('.bug-dot');
-                
-                let index = Math.round(bugContainer.scrollLeft / (cards[0].offsetWidth + 12));
-                dots.forEach((dot, i) => {
-                    if (i === index) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
-            });
-        }
-
-        function openInfoModal() {
-            document.getElementById('infoModal').style.display = 'flex';
-        }
-
-        function closeInfoModal() {
-            document.getElementById('infoModal').style.display = 'none';
-        }
-      
     </script>
 </body>
 </html>
